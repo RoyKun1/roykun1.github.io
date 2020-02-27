@@ -85,9 +85,6 @@
 <p>使用命令：<code>hexo new &quot;title&quot;</code>即可创建文章，一般在source/_post文件夹下<br>头部包含时间、标签，可以修改<br>编辑好文章后使用<code>hexo clean</code>和<code>hexo d -g</code>提交即可</p>
 </blockquote>
 ]]></content>
-      <tags>
-        <tag>Hexo</tag>
-      </tags>
   </entry>
   <entry>
     <title>Hello World</title>
