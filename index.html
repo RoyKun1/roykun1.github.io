@@ -294,6 +294,125 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/29/testGit/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Roy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/Roy.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RoyBlog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/02/29/testGit/" itemprop="url">testGit</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-29T13:27:10+08:00">
+                2020-02-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/29/Thinkphp6%E2%80%94%E2%80%94%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E7%AF%87/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -956,7 +1075,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/26/Thinkphp6%E2%80%94%E2%80%94%E5%9F%BA%E7%A1%80%E4%B8%8E%E8%A7%86%E5%9B%BE/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/27/Thinkphp6%E2%80%94%E2%80%94%E9%A1%B9%E7%9B%AE%E9%85%8D%E7%BD%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Roy">
@@ -975,7 +1094,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/12/26/Thinkphp6%E2%80%94%E2%80%94%E5%9F%BA%E7%A1%80%E4%B8%8E%E8%A7%86%E5%9B%BE/" itemprop="url">Thinkphp6——基础与视图</a></h1>
+                <a class="post-title-link" href="/2019/12/27/Thinkphp6%E2%80%94%E2%80%94%E9%A1%B9%E7%9B%AE%E9%85%8D%E7%BD%AE/" itemprop="url">Thinkphp6——项目配置</a></h1>
         
 
         <div class="post-meta">
@@ -987,8 +1106,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-26T12:13:15+08:00">
-                2019-12-26
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-27T15:38:24+08:00">
+                2019-12-27
               </time>
             
 
@@ -1027,66 +1146,30 @@
       
         
           
-            <h1 id="Thinkphp6——基础与视图篇"><a href="#Thinkphp6——基础与视图篇" class="headerlink" title="Thinkphp6——基础与视图篇"></a>Thinkphp6——基础与视图篇</h1><ul>
-<li>ThinkPHP支持传统的MVC（Model-View-Controller）模式以及流行的MVVM（Model-View-ViewModel）模式的应用开发</li>
+            <h1 id="Thinkphp6——项目配置"><a href="#Thinkphp6——项目配置" class="headerlink" title="Thinkphp6——项目配置"></a>Thinkphp6——项目配置</h1><ul>
+<li>Config目录下面是tp6的常规配置，可以自定义配置并引入</li>
+<li>配置一般均以return返回</li>
 </ul>
-<hr>
-<h2 id="一、MVC"><a href="#一、MVC" class="headerlink" title="一、MVC"></a>一、MVC</h2><ul>
-<li><code>MVC</code> 软件系统分为三个基本部分：模型（Model）、视图（View）和控制器（Controller）</li>
-<li><code>ThinkPHP</code> 是一个典型的 <code>MVC</code> 架构</li>
-</ul>
-<blockquote>
-<p>控制器 - 负责转发请求，对请求进行处理。<br>视图 - 界面设计人员进行图形界面设计。<br>模型 - 程序员编写程序应有的功能（实现算法等等）、数据库专家进行数据管理和数据库设计(可以实现具体的功能)。</p>
-</blockquote>
-<p><img src="http://bew.czgzweb.com/php/mvc.gif" alt="mvc"></p>
-<hr>
-<h2 id="二、单应用模式访问"><a href="#二、单应用模式访问" class="headerlink" title="二、单应用模式访问"></a>二、单应用模式访问</h2><ul>
-<li>项目访问路径：<a href="http://www.xxx.com/index.php/index/index" target="_blank" rel="noopener">www.tp6.com/index.php/index/index</a></li>
-</ul>
-<blockquote>
-<p>index.php 入口文件，在tp6/public目录下<br>index 控制器<br>index 操作</p>
-</blockquote>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">├─app           应用目录</span><br><span class="line">│  ├─controller      控制器目录</span><br><span class="line">│  ├─model           模型目录</span><br><span class="line">│  ├─ ...            更多类库目录</span><br><span class="line">│  │</span><br><span class="line">│  ├─common.php         公共函数文件</span><br><span class="line">│  └─event.php          事件定义文件</span><br><span class="line">│</span><br><span class="line">├─config                配置目录</span><br><span class="line">│  ├─app.php            应用配置</span><br><span class="line">│  ├─cache.php          缓存配置</span><br><span class="line">│  ├─console.php        控制台配置</span><br><span class="line">│  ├─cookie.php         Cookie配置</span><br><span class="line">│  ├─database.php       数据库配置</span><br><span class="line">│  ├─filesystem.php     文件磁盘配置</span><br><span class="line">│  ├─lang.php           多语言配置</span><br><span class="line">│  ├─log.php            日志配置</span><br><span class="line">│  ├─middleware.php     中间件配置</span><br><span class="line">│  ├─route.php          URL和路由配置</span><br><span class="line">│  ├─session.php        Session配置</span><br><span class="line">│  ├─trace.php          Trace配置</span><br><span class="line">│  └─view.php           视图配置</span><br><span class="line">│</span><br><span class="line">├─view            视图目录</span><br><span class="line">├─route                 路由定义目录</span><br><span class="line">│  ├─route.php          路由定义文件</span><br><span class="line">│  └─ ...</span><br><span class="line">│</span><br><span class="line">├─<span class="keyword">public</span>                WEB目录（对外访问目录）</span><br><span class="line">│  ├─index.php          入口文件</span><br><span class="line">│  ├─router.php         快速测试文件</span><br><span class="line">│  └─.htaccess          用于apache的重写</span><br><span class="line">│</span><br><span class="line">├─extend                扩展类库目录</span><br><span class="line">├─runtime               应用的运行时目录（可写，可定制）</span><br><span class="line">├─vendor                Composer类库目录</span><br><span class="line">├─.example.env          环境变量示例文件</span><br><span class="line">├─composer.json         composer 定义文件</span><br><span class="line">├─LICENSE.txt           授权说明文件</span><br><span class="line">├─README.md             README 文件</span><br><span class="line">├─think                 命令行入口文件</span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">├─config（配置目录）</span><br><span class="line">│  ├─app.php            应用配置</span><br><span class="line">│  ├─cache.php          缓存配置</span><br><span class="line">│  ├─console.php        控制台配置</span><br><span class="line">│  ├─cookie.php         Cookie配置</span><br><span class="line">│  ├─database.php       数据库配置</span><br><span class="line">│  ├─filesystem.php     文件磁盘配置</span><br><span class="line">│  ├─lang.php           多语言配置</span><br><span class="line">│  ├─log.php            日志配置</span><br><span class="line">│  ├─middleware.php     中间件配置</span><br><span class="line">│  ├─route.php          URL和路由配置</span><br><span class="line">│  ├─session.php        Session配置</span><br><span class="line">│  ├─trace.php          Trace配置</span><br><span class="line">│  ├─view.php           视图配置</span><br><span class="line">│  └─ ...               更多配置文件</span><br></pre></td></tr></table></figure>
 
-<hr>
-<h2 id="三、安装视图"><a href="#三、安装视图" class="headerlink" title="三、安装视图"></a>三、安装视图</h2><ul>
-<li>视图功能由\think\View类配合视图驱动（也即模板引擎驱动）类一起完成，新版仅内置了PHP原生模板引擎（主要用于内置的异常页面输出），如果需要使用其它的模板引擎需要单独安装相应的模板引擎扩展</li>
-<li>因此，你需要在命令行运行下面这行指令：</li>
+<p>这里只介绍重点的配置文件</p>
+<h2 id="模板配置view-php"><a href="#模板配置view-php" class="headerlink" title="模板配置view.php"></a>模板配置view.php</h2><ul>
+<li>在这里可以对模板引擎做个性化的定制，但是要保证统一（代码习惯）</li>
 </ul>
-<blockquote>
-<p>composer require topthink/think-view</p>
-</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> [</span><br><span class="line">    <span class="comment">// 模板引擎类型使用Think</span></span><br><span class="line">    <span class="string">'type'</span>          =&gt; <span class="string">'Think'</span>,</span><br><span class="line">    <span class="comment">// 默认模板渲染规则 1 解析为小写+下划线 2 全部转换小写 3 保持操作方法</span></span><br><span class="line">    <span class="string">'auto_rule'</span>     =&gt; <span class="number">1</span>,</span><br><span class="line">    <span class="comment">// 模板目录名</span></span><br><span class="line">    <span class="string">'view_dir_name'</span> =&gt; <span class="string">'view'</span>,</span><br><span class="line">    <span class="comment">// 模板后缀</span></span><br><span class="line">    <span class="string">'view_suffix'</span>   =&gt; <span class="string">'html'</span>,</span><br><span class="line">    <span class="comment">// 模板文件名分隔符</span></span><br><span class="line">    <span class="string">'view_depr'</span>     =&gt; DIRECTORY_SEPARATOR,</span><br><span class="line">    <span class="comment">// 模板引擎普通标签开始标记</span></span><br><span class="line">    <span class="string">'tpl_begin'</span>     =&gt; <span class="string">'&#123;'</span>,</span><br><span class="line">    <span class="comment">// 模板引擎普通标签结束标记</span></span><br><span class="line">    <span class="string">'tpl_end'</span>       =&gt; <span class="string">'&#125;'</span>,</span><br><span class="line">    <span class="comment">// 标签库标签开始标记</span></span><br><span class="line">    <span class="string">'taglib_begin'</span>  =&gt; <span class="string">'&#123;'</span>,</span><br><span class="line">    <span class="comment">// 标签库标签结束标记</span></span><br><span class="line">    <span class="string">'taglib_end'</span>    =&gt; <span class="string">'&#125;'</span>,</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+
+<h2 id="env-环境变量定义"><a href="#env-环境变量定义" class="headerlink" title="env 环境变量定义"></a><code>env</code> 环境变量定义</h2><ul>
+<li>默认安装后的根目录有一个.example.env环境变量示例文件，改成.env文件后生效</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">APP_DEBUG = <span class="keyword">true</span></span><br><span class="line"></span><br><span class="line">[APP]</span><br><span class="line">DEFAULT_TIMEZONE = Asia/Shanghai</span><br><span class="line"></span><br><span class="line">[DATABASE]		<span class="comment">// 以下是对于数据库的默认值设置</span></span><br><span class="line">TYPE = mysql	<span class="comment">// 如果在database.php中进行设置则会覆盖</span></span><br><span class="line">HOSTNAME = <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line">DATABASE = test</span><br><span class="line">USERNAME = username</span><br><span class="line">PASSWORD = password</span><br><span class="line">HOSTPORT = <span class="number">3306</span></span><br><span class="line">CHARSET = utf8</span><br><span class="line">DEBUG = <span class="keyword">true</span></span><br><span class="line"></span><br><span class="line">[LANG]</span><br><span class="line">default_lang = zh-cn</span><br></pre></td></tr></table></figure>
+
 <ul>
-<li>视图目录可以在根目录，也可以在app应用目录</li>
+<li><p>要使用env，必须先引入 <code>think\facade\Env</code> 门面类</p>
+</li>
+<li><p>环境变量的获取不区分大小写</p>
+<img src="C:\Users\szspl\Desktop\图片1.png" alt="图片1" style="zoom: 67%;" /></li>
 </ul>
-<hr>
-<h2 id="四、模版渲染"><a href="#四、模版渲染" class="headerlink" title="四、模版渲染"></a>四、模版渲染</h2><ul>
-<li>要使用View，必须先引入 <code>think\facade\View</code> 门面类</li>
-<li><code>fetch</code> 方法渲染页面</li>
-</ul>
-<blockquote>
-<p>controller代码</p>
-</blockquote>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">app</span>\<span class="title">controller</span>;	<span class="comment">// 命名空间</span></span><br><span class="line"><span class="keyword">use</span> <span class="title">think</span>\<span class="title">facade</span>\<span class="title">View</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Index</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> View::fetch();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="C:%5CUsers%5Cszspl%5CDesktop%5C%E5%9B%BE%E7%89%871.png" alt="图片1"></p>
-<ul>
-<li>注：一个控制器的类对应一个view视图的目录，这个类中的<strong><em>方法</em></strong>，对应这个目录中的html<strong><em>页面</em></strong></li>
-</ul>
-<hr>
-<h2 id="五、模版变量"><a href="#五、模版变量" class="headerlink" title="五、模版变量"></a>五、模版变量</h2><ul>
-<li>在控制器中使用<code>assign</code> 方法给全局变量赋值，这个变量也叫作模板变量<br>注：要区分模板和模型的概念</li>
-<li>在视图页面中使用 <code>{$name}</code>输出模板变量值</li>
-</ul>
-<blockquote>
-<p>controller代码</p>
-</blockquote>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">app</span>\<span class="title">controller</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">think</span>\<span class="title">facade</span>\<span class="title">View</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Index</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">// 模板变量赋值</span></span><br><span class="line">        View::assign(<span class="string">'name'</span>,<span class="string">'欧阳克'</span>);</span><br><span class="line">        View::assign(<span class="string">'email'</span>,<span class="string">'oyk@php.cn'</span>);</span><br><span class="line">        <span class="comment">// 或者批量赋值</span></span><br><span class="line">        View::assign([</span><br><span class="line">            <span class="string">'name'</span>  =&gt; <span class="string">'Roy'</span>,</span><br><span class="line">            <span class="string">'email'</span> =&gt; <span class="string">'szsplyr@163.com'</span></span><br><span class="line">        ]);</span><br><span class="line">        <span class="comment">// 模板输出</span></span><br><span class="line">        <span class="keyword">return</span> View::fetch();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>view代码</p>
-</blockquote>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>ThinkPHP6<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    姓名：&#123;$name&#125;</span><br><span class="line">    <span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">    邮箱：&#123;$email&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
           
         
       
@@ -1171,7 +1254,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
