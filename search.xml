@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>testGit</title>
-    <url>/2020/02/29/testGit/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
     <title>想知道Hexo&amp;next的操作吗？</title>
     <url>/2020/02/27/%E6%83%B3%E7%9F%A5%E9%81%93Hexo-next%E7%9A%84%E6%93%8D%E4%BD%9C%E5%90%97%EF%BC%9F/</url>
     <content><![CDATA[<h2 id="使用Hexo-next个性化自己的github博客"><a href="#使用Hexo-next个性化自己的github博客" class="headerlink" title="使用Hexo+next个性化自己的github博客"></a>使用Hexo+next个性化自己的github博客</h2><ul>
@@ -127,6 +122,415 @@
 ]]></content>
   </entry>
   <entry>
+    <title>Thinkphp6——数据库</title>
+    <url>/2019/12/28/Thinkphp6%E2%80%94%E2%80%94%E6%95%B0%E6%8D%AE%E5%BA%93/</url>
+    <content><![CDATA[<h1 id="Thinkphp6——数据库"><a href="#Thinkphp6——数据库" class="headerlink" title="Thinkphp6——数据库"></a>Thinkphp6——数据库</h1><ul>
+<li>ThinkPHP6 数据库和模型操作已经独立为ThinkORM库</li>
+<li>要使用Db类必须使用门面方式（ <code>think\facade\Db</code> ）调用</li>
+<li>数据库操作统一入口： <code>Db::</code></li>
+</ul>
+<p>我们可以在Navicat工具——查询中执行SQL命令，例如：</p>
+<ul>
+<li>创建数据库<br><img src="https://raw.githubusercontent.com/RoyKun1/ImageUploads/master/HexoImages/navicat.png" alt=""></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">DROP TABLE IF EXISTS &#96;shop_cat&#96;;</span><br><span class="line">CREATE TABLE &#96;shop_cat&#96; (</span><br><span class="line">    &#96;id&#96; int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT &#39;ID&#39;,</span><br><span class="line">    &#96;name&#96; varchar(50) NOT NULL COMMENT &#39;分类名&#39;,</span><br><span class="line">    &#96;status&#96; tinyint(1) unsigned NOT NULL DEFAULT &#39;1&#39; COMMENT &#39;状态 1开启 2关闭&#39;,</span><br><span class="line">    PRIMARY KEY (&#96;id&#96;)</span><br><span class="line">) ENGINE&#x3D;MyISAM AUTO_INCREMENT&#x3D;8 DEFAULT CHARSET&#x3D;utf8mb4 COMMENT&#x3D;&#39;分类表&#39;;</span><br><span class="line"></span><br><span class="line">INSERT INTO &#96;shop_cat&#96; VALUES (1, &#39;女装&#39;, 1);</span><br><span class="line">INSERT INTO &#96;shop_cat&#96; VALUES (2, &#39;男装&#39;, 1);</span><br><span class="line">INSERT INTO &#96;shop_cat&#96; VALUES (3, &#39;孕产&#39;, 1);</span><br><span class="line">INSERT INTO &#96;shop_cat&#96; VALUES (4, &#39;童装&#39;, 1);</span><br><span class="line">INSERT INTO &#96;shop_cat&#96; VALUES (5, &#39;电视&#39;, 1);</span><br><span class="line">INSERT INTO &#96;shop_cat&#96; VALUES (6, &#39;手机&#39;, 1);</span><br><span class="line">INSERT INTO &#96;shop_cat&#96; VALUES (7, &#39;电脑&#39;, 1);</span><br></pre></td></tr></table></figure>
+
+<h2 id="执行原生sql语句"><a href="#执行原生sql语句" class="headerlink" title="执行原生sql语句"></a>执行原生sql语句</h2><ol>
+<li><p><code>query</code> 方法用于执行 MySql 查询操作</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span></span>&#123;</span><br><span class="line">    $query = Db::query(<span class="string">"SELECT * FROM `shop_goods` where status=1"</span>);</span><br><span class="line">    print_r($query);	<span class="comment">// 返回值为二维数组</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>execute</code> 方法用于执行 MySql 新增和修改操作</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span></span>&#123;</span><br><span class="line">    $execute = Db::execute(<span class="string">"INSERT INTO `shop_goods` VALUES (3, 1, '2019秋冬连衣裙女', 1179.00, 0, 200, 1, 1576080000)"</span>);	<span class="comment">// 使用insert into 插入</span></span><br><span class="line">    print_r($execute);</span><br><span class="line">    $execute = Db::execute(<span class="string">"UPDATE `shop_goods` set `price`='1100' where `id`=3 "</span>);		<span class="comment">// 使用update更新</span></span><br><span class="line">    print_r($execute);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="tp自带数据库操作方法"><a href="#tp自带数据库操作方法" class="headerlink" title="tp自带数据库操作方法"></a>tp自带数据库操作方法</h2><h3 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h3><ol>
+<li><p>单条数据查询 <code>find</code></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span></span>&#123;</span><br><span class="line">    $find = Db::table(<span class="string">'shop_goods'</span>)-&gt;find(<span class="number">5</span>);</span><br><span class="line">    print_r($find);		<span class="comment">//find 方法查询结果不存在，返回 null，否则返回一维数组</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注：我们一般只需关注查询操作的返回值类型</p>
+</li>
+<li><p>多条数据查询 <code>select</code></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span></span>&#123;</span><br><span class="line">    $select = Db::table(<span class="string">'shop_goods'</span>)-&gt;select();</span><br><span class="line">    print_r($select);	<span class="comment">// 返回结果是object对象，可以转换为数组；</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取单条记录(某行)某个字段的值 <code>value</code></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span></span>&#123;</span><br><span class="line">    $value = Db::table(<span class="string">'shop_goods'</span>)-&gt;where(<span class="string">'id'</span>==<span class="number">1007</span>)value(<span class="string">'title'</span>);</span><br><span class="line">    print_r($value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查询某一列的值<code>column</code></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span></span>&#123;</span><br><span class="line">    $column = Db::table(<span class="string">'shop_goods'</span>)-&gt;column(<span class="string">'title'</span>);</span><br><span class="line">    print_r($column);</span><br><span class="line">    $column = Db::table(<span class="string">'shop_goods'</span>)-&gt;column(<span class="string">'title'</span>,<span class="string">'id'</span>);</span><br><span class="line">    print_r($column);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="添加"><a href="#添加" class="headerlink" title="添加"></a>添加</h3><ol>
+<li><p>添加一条数据 <code>insert</code></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span></span>&#123;</span><br><span class="line">    $data = [<span class="string">'cat'</span>=&gt;<span class="string">'1'</span>,<span class="string">'title'</span>=&gt;<span class="string">'日系小浪漫连衣裙'</span>,<span class="string">'price'</span>=&gt;<span class="string">'1598.35'</span>,<span class="string">'add_time'</span>=&gt;<span class="number">1576080000</span>];</span><br><span class="line">    $insert = Db::table(<span class="string">'shop_goods'</span>)-&gt;insert($data);	<span class="comment">//返回添加成功的条数，通常情况返回 1</span></span><br><span class="line">    print_r($insert);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加一条数据<code>insertGetId</code></p>
+<ul>
+<li><code>insertGetId</code> 返回添加数据的自增主键(一般为id值嘛)</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span></span>&#123;</span><br><span class="line">    $data = [<span class="string">'cat'</span>=&gt;<span class="string">'1'</span>,<span class="string">'title'</span>=&gt;<span class="string">'针织毛衣裙女'</span>,<span class="string">'price'</span>=&gt;<span class="string">'690.00'</span>,<span class="string">'add_time'</span>=&gt;<span class="number">1576080000</span>];</span><br><span class="line">    $insert = Db::table(<span class="string">'shop_goods'</span>)-&gt;insertGetId($data);</span><br><span class="line">    print_r($insert);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加多条数据 <code>insertAll</code></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span></span>&#123;</span><br><span class="line">    $data = [</span><br><span class="line">        [<span class="string">'cat'</span>=&gt;<span class="string">'1'</span>,<span class="string">'title'</span>=&gt;<span class="string">'内裤'</span>,<span class="string">'price'</span>=&gt;<span class="string">'658.00'</span>,<span class="string">'add_time'</span>=&gt;<span class="number">1576080000</span>],</span><br><span class="line">        [<span class="string">'cat'</span>=&gt;<span class="string">'1'</span>,<span class="string">'title'</span>=&gt;<span class="string">'秋裤'</span>,<span class="string">'price'</span>=&gt;<span class="string">'408.00'</span>,<span class="string">'add_time'</span>=&gt;<span class="number">1576080000</span>],</span><br><span class="line">        [<span class="string">'cat'</span>=&gt;<span class="string">'2'</span>,<span class="string">'title'</span>=&gt;<span class="string">' 小丁'</span>,<span class="string">'price'</span>=&gt;<span class="string">'99.00'</span>,<span class="string">'add_time'</span>=&gt;<span class="number">1576080000</span>]</span><br><span class="line">    ];</span><br><span class="line">    $insert = Db::table(<span class="string">'shop_goods'</span>)-&gt;insertAll($data);</span><br><span class="line">    print_r($insert);	<span class="comment">// 返回添加成功的条数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="修改"><a href="#修改" class="headerlink" title="修改"></a>修改</h3><ol>
+<li><p>修改数据 <code>update</code></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span></span>&#123;</span><br><span class="line">    $data = [<span class="string">'price'</span>=&gt;<span class="string">'68'</span>];</span><br><span class="line">    $update = Db::table(<span class="string">'shop_goods'</span>)-&gt;where(<span class="string">'id'</span>,<span class="number">8</span>)-&gt;update($data);</span><br><span class="line">    print_r($update);	<span class="comment">// 返回影响数据的条数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>inc</code>方法自增一个字段的值</p>
+<ul>
+<li>就是方便一点而已</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span></span>&#123;</span><br><span class="line">    $inc = Db::table(<span class="string">'shop_goods'</span>)-&gt;where(<span class="string">'id'</span>,<span class="number">5</span>)-&gt;inc(<span class="string">'stock'</span>)-&gt;update();</span><br><span class="line">    print_r($inc);</span><br><span class="line">    $inc = Db::table(<span class="string">'shop_goods'</span>)-&gt;where(<span class="string">'id'</span>,<span class="number">6</span>)-&gt;inc(<span class="string">'stock'</span>,<span class="number">5</span>)-&gt;update();</span><br><span class="line">    print_r($inc);	<span class="comment">// # 字段的值增加5</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>dec</code> 自减一个字段的值</li>
+</ul>
+</li>
+</ol>
+<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><ol>
+<li><p>删除数据 <code>delete</code></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment"># 根据条件删除数据</span></span><br><span class="line">    $delete = Db::table(<span class="string">'shop_goods'</span>)-&gt;where(<span class="string">'id'</span>,<span class="number">1</span>)-&gt;delete();</span><br><span class="line">    print_r($delete);</span><br><span class="line">    <span class="comment"># 删除主键为2的数据</span></span><br><span class="line">    $delete = Db::table(<span class="string">'shop_goods'</span>)-&gt;delete(<span class="number">2</span>);	<span class="comment">// 参数为主键值</span></span><br><span class="line">    print_r($delete);</span><br><span class="line">    <span class="comment"># 删除整表数据</span></span><br><span class="line">    $delete = Db::table(<span class="string">'shop_goods'</span>)-&gt;delete(<span class="keyword">true</span>);</span><br><span class="line">    print_r($delete);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>软删除 <code>useSoftDelete</code></p>
+<ul>
+<li>业务数据不建议真实删除数据，TP系统提供了软删除机制</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment"># 软删除</span></span><br><span class="line">    $delete = Db::table(<span class="string">'shop_goods'</span>)-&gt;useSoftDelete(<span class="string">'status'</span>,<span class="number">3</span>)-&gt;delete();</span><br><span class="line">    print_r($delete);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="其他方法"><a href="#其他方法" class="headerlink" title="其他方法"></a>其他方法</h3><ul>
+<li><p><code>save</code> 方法统一写入数据，自动判断是新增还是更新数据</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span></span>&#123;</span><br><span class="line"><span class="comment"># 添加数据</span></span><br><span class="line">$data = [<span class="string">'cat'</span>=&gt;<span class="string">'2'</span>,<span class="string">'title'</span>=&gt;<span class="string">'美特斯邦威七分牛仔裤女2018夏季新款中腰修身洗水牛仔裤商场款'</span>,<span class="string">'price'</span>=&gt;<span class="string">'49.90'</span>,<span class="string">'add_time'</span>=&gt;<span class="number">1576080000</span>];</span><br><span class="line">$save = Db::table(<span class="string">'shop_goods'</span>)-&gt;save($data);</span><br><span class="line">print_r($save);</span><br><span class="line"><span class="comment"># 修改数据</span></span><br><span class="line">$data = [<span class="string">'price'</span>=&gt;<span class="string">'99.00'</span>,<span class="string">'id'</span>=&gt;<span class="number">3</span>];</span><br><span class="line">$save = Db::table(<span class="string">'shop_goods'</span>)-&gt;save($data);</span><br><span class="line">print_r($save);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="Thinkphp提供了很多处理数据集的方法"><a href="#Thinkphp提供了很多处理数据集的方法" class="headerlink" title="Thinkphp提供了很多处理数据集的方法"></a><code>Thinkphp</code>提供了很多处理数据集的方法</h2><ul>
+<li>前面介绍了原生和tp6中的数据库CURD操作，对查询到的数据集也封装了很多方法处理，这些相当于工具，后面介绍工具使用的常用方法——链式操作</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>方法</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>toArray</td>
+<td>转换为数组</td>
+</tr>
+<tr>
+<td>isEmpty</td>
+<td>是否为空</td>
+</tr>
+<tr>
+<td>all</td>
+<td>所有数据</td>
+</tr>
+<tr>
+<td>merge</td>
+<td>合并其它数据</td>
+</tr>
+<tr>
+<td>diff</td>
+<td>比较数组，返回差集</td>
+</tr>
+<tr>
+<td>flip</td>
+<td>交换数据中的键和值</td>
+</tr>
+<tr>
+<td>intersect</td>
+<td>比较数组，返回交集</td>
+</tr>
+<tr>
+<td>keys</td>
+<td>返回数据中的所有键名</td>
+</tr>
+<tr>
+<td>pop</td>
+<td>删除数据中的最后一个元素</td>
+</tr>
+<tr>
+<td>shift</td>
+<td>删除数据中的第一个元素</td>
+</tr>
+<tr>
+<td>unshift</td>
+<td>在数据开头插入一个元素</td>
+</tr>
+<tr>
+<td>push</td>
+<td>在结尾插入一个元素</td>
+</tr>
+<tr>
+<td>reduce</td>
+<td>通过使用用户自定义函数，以字符串返回数组</td>
+</tr>
+<tr>
+<td>reverse</td>
+<td>数据倒序重排</td>
+</tr>
+<tr>
+<td>chunk</td>
+<td>数据分隔为多个数据块</td>
+</tr>
+<tr>
+<td>each</td>
+<td>给数据的每个元素执行回调</td>
+</tr>
+<tr>
+<td>filter</td>
+<td>用回调函数过滤数据中的元素</td>
+</tr>
+<tr>
+<td>column</td>
+<td>返回数据中的指定列</td>
+</tr>
+<tr>
+<td>sort</td>
+<td>对数据排序</td>
+</tr>
+<tr>
+<td>order</td>
+<td>指定字段排序</td>
+</tr>
+<tr>
+<td>shuffle</td>
+<td>将数据打乱</td>
+</tr>
+<tr>
+<td>slice</td>
+<td>截取数据中的一部分</td>
+</tr>
+<tr>
+<td>map</td>
+<td>用回调函数处理数组中的元素</td>
+</tr>
+<tr>
+<td>where</td>
+<td>根据字段条件过滤数组中的元素</td>
+</tr>
+<tr>
+<td>whereLike</td>
+<td>Like查询过滤元素</td>
+</tr>
+<tr>
+<td>whereNotLike</td>
+<td>Not Like过滤元素</td>
+</tr>
+<tr>
+<td>whereIn</td>
+<td>IN查询过滤数组中的元素</td>
+</tr>
+<tr>
+<td>whereNotIn</td>
+<td>Not IN查询过滤数组中的元素</td>
+</tr>
+<tr>
+<td>whereBetween</td>
+<td>Between查询过滤数组中的元素</td>
+</tr>
+<tr>
+<td>whereNotBetween</td>
+<td>Not Between查询过滤数组中的元素</td>
+</tr>
+</tbody></table>
+<p>注：看看就行，常用<code>toArray()</code>等</p>
+<h1 id="数据库链式操作"><a href="#数据库链式操作" class="headerlink" title="数据库链式操作"></a>数据库链式操作</h1><ul>
+<li><p>链式操作即<strong><em>增删改查</em></strong>配合<strong><em>新定义的方法</em></strong>在一条语句中完成对数据的多种操作</p>
+</li>
+<li><p>数据库提供的链式操作方法，可以有效的提高数据存取的代码清晰度和开发效率</p>
+<table>
+<thead>
+<tr>
+<th><strong>连贯操作</strong></th>
+<th><strong>作用</strong></th>
+<th><strong>支持的参数类型</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>where*</td>
+<td>用于AND查询</td>
+<td>字符串、数组和对象</td>
+</tr>
+<tr>
+<td>table</td>
+<td>用于定义要操作的数据表名称</td>
+<td>字符串和数组</td>
+</tr>
+<tr>
+<td>name</td>
+<td>用于定义要操作的数据表名称</td>
+<td>字符串</td>
+</tr>
+<tr>
+<td>field*</td>
+<td>用于定义要查询的字段（支持字段排除）</td>
+<td>字符串和数组</td>
+</tr>
+<tr>
+<td>order*</td>
+<td>用于对结果排序</td>
+<td>字符串和数组</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>用于限制查询结果数量</td>
+<td>字符串和数字</td>
+</tr>
+<tr>
+<td>page</td>
+<td>用于查询分页（内部会转换成limit）</td>
+<td>字符串和数字</td>
+</tr>
+</tbody></table>
+<p>注：带*标识的表示支持多次调用</p>
+</li>
+<li><p>还有很多其他方法，下面将介绍主要方法</p>
+</li>
+<li><p>链式操作一般配合<strong><em>表达式</em></strong>使用，表达式写在<code>where</code>里：</p>
+<table>
+<thead>
+<tr>
+<th><strong>表达式</strong></th>
+<th><strong>含义</strong></th>
+<th><strong>查询方法</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>=</td>
+<td>等于</td>
+<td></td>
+</tr>
+<tr>
+<td>&lt;&gt;</td>
+<td>不等于</td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td>大于</td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;=</td>
+<td>大于等于</td>
+<td></td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>小于</td>
+<td></td>
+</tr>
+<tr>
+<td>&lt;=</td>
+<td>小于等于</td>
+<td></td>
+</tr>
+<tr>
+<td>[NOT] LIKE</td>
+<td>模糊查询</td>
+<td>whereLike/whereNotLike</td>
+</tr>
+<tr>
+<td>[NOT] BETWEEN</td>
+<td>（不在）区间查询</td>
+<td>whereBetween/whereNotBetween</td>
+</tr>
+<tr>
+<td>[NOT] IN</td>
+<td>（不在）IN 查询</td>
+<td>whereIn/whereNotIn</td>
+</tr>
+<tr>
+<td>[NOT] NULL</td>
+<td>查询字段是否（不）是NULL</td>
+<td>whereNull/whereNotNull</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h2 id="where查询"><a href="#where查询" class="headerlink" title="where查询"></a><code>where</code>查询</h2><ul>
+<li><p><code>where</code>方法在链式操作方法里面是最常用的方法，可以完成包括普通查询、表达式查询、快捷查询、区间查询、组合查询在内的条件查询操作</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">$select = Db::table(<span class="string">'shop_goods'</span>)-&gt;where(<span class="string">'id'</span>,<span class="string">'='</span>,<span class="string">'1'</span>)-&gt;select();</span><br><span class="line">$select = Db::table(<span class="string">'shop_goods'</span>)</span><br><span class="line">            -&gt;where(<span class="string">'id'</span>,<span class="string">'&gt;'</span>,<span class="string">'3'</span>)</span><br><span class="line">            -&gt;where(<span class="string">'id'</span>,<span class="string">'&lt;'</span>,<span class="string">'8'</span>)</span><br><span class="line">            -&gt;select();</span><br><span class="line">$select = Db::table(<span class="string">'shop_goods'</span>)-&gt;where(<span class="string">'title'</span>,<span class="string">'like'</span>,<span class="string">'%连衣裙%'</span>)-&gt;select();	<span class="comment">// 模糊查询</span></span><br><span class="line">$select = Db::table(<span class="string">'shop_goods'</span>)-&gt;where(<span class="string">'title'</span>,<span class="string">'not like'</span>,<span class="string">'%连衣裙%'</span>)-&gt;select();</span><br><span class="line"></span><br><span class="line">$select = Db::table(<span class="string">'shop_goods'</span>)-&gt;where(<span class="string">'id'</span>,<span class="string">'not between'</span>,[<span class="number">6</span>,<span class="number">10</span>])-&gt;select();</span><br><span class="line"></span><br><span class="line">$select = Db::table(<span class="string">'shop_goods'</span>)-&gt;where(<span class="string">'id'</span>,<span class="string">'in'</span>,<span class="string">'4,7,10'</span>)-&gt;select();	<span class="comment">// [4,7,10]</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="field"><a href="#field" class="headerlink" title="field"></a><code>field</code></h2><ul>
+<li><p>主要作用是设定要返回或者操作的字段，可以用于查询和写入操作</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">$select = Db::table(<span class="string">'shop_goods'</span>)</span><br><span class="line">            -&gt;field(<span class="string">'title,price,discount as d'</span>)</span><br><span class="line">            -&gt;where(<span class="string">'status'</span>,<span class="number">1</span>)</span><br><span class="line">            -&gt;select();</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="order"><a href="#order" class="headerlink" title="order"></a><code>order</code></h2><ul>
+<li><p>对操作的结果排序或者优先级限制</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">$select = Db::table(<span class="string">'shop_goods'</span>)</span><br><span class="line">            -&gt;field(<span class="string">'title,price,id'</span>)</span><br><span class="line">            -&gt;where(<span class="string">'status'</span>,<span class="number">1</span>)</span><br><span class="line">            -&gt;order(<span class="string">'price'</span>,<span class="string">'DESC'</span>)</span><br><span class="line">            -&gt;order(<span class="string">'id'</span>,<span class="string">'DESC'</span>)	<span class="comment">// DESC 降序</span></span><br><span class="line">            -&gt;select();</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="limit"><a href="#limit" class="headerlink" title="limit"></a><code>limit</code></h2><ul>
+<li><p>主要用于指定查询和操作的数量</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">$select = Db::table(<span class="string">'shop_goods'</span>)</span><br><span class="line">            -&gt;field(<span class="string">'title,price,id'</span>)</span><br><span class="line">            -&gt;where(<span class="string">'status'</span>,<span class="number">1</span>)</span><br><span class="line">            -&gt;order(<span class="string">'price'</span>,<span class="string">'DESC'</span>)	<span class="comment">// 可以先使用order</span></span><br><span class="line">            -&gt;limit(<span class="number">0</span>,<span class="number">5</span>)	<span class="comment">// 从0开始，查询5条数据（不包括0）</span></span><br><span class="line">    		-&gt;limit(<span class="number">4</span>)		<span class="comment">// 从第4行开始查询后面所有行（不包括4）</span></span><br><span class="line">            -&gt;select();		<span class="comment">// $offset	$rowNums</span></span><br><span class="line"></span><br><span class="line">$select = Db::table(<span class="string">'shop_goods'</span>)</span><br><span class="line">            -&gt;field(<span class="string">'title,price,id'</span>)</span><br><span class="line">            -&gt;where(<span class="string">'status'</span>,<span class="number">1</span>)</span><br><span class="line">            -&gt;order(<span class="string">'price'</span>,<span class="string">'DESC'</span>)</span><br><span class="line">            -&gt;page(<span class="number">1</span>,<span class="number">5</span>)		<span class="comment">// page 方法主要用于分页查询</span></span><br><span class="line">            -&gt;select();</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="聚合查询"><a href="#聚合查询" class="headerlink" title="聚合查询"></a>聚合查询</h2><ul>
+<li><p>使用聚合方法的查询</p>
+<table>
+<thead>
+<tr>
+<th><strong>方法</strong></th>
+<th align="center"><strong>功能</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>max</td>
+<td align="center">获取最大值，参数是要统计的字段名（必须）</td>
+</tr>
+<tr>
+<td>min</td>
+<td align="center">获取最小值，参数是要统计的字段名（必须）</td>
+</tr>
+<tr>
+<td>avg</td>
+<td align="center">获取平均值，参数是要统计的字段名（必须）</td>
+</tr>
+<tr>
+<td>sum</td>
+<td align="center">获取总数，参数是要统计的字段名（必须）</td>
+</tr>
+<tr>
+<td>count</td>
+<td align="center">统计数量，参数是要统计的字段名（可选）</td>
+</tr>
+</tbody></table>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 获取最小值，参数是要统计的字段名（必须）</span></span><br><span class="line">$select = Db::table(<span class="string">'shop_goods'</span>)-&gt;min(<span class="string">'id'</span>);</span><br><span class="line">print_r($select);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取平均值，参数是要统计的字段名（必须）</span></span><br><span class="line">$select = Db::table(<span class="string">'shop_goods'</span>)-&gt;avg(<span class="string">'id'</span>);</span><br><span class="line">print_r($select);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>注：在涉及到数据库操作的时候，往往需要结合php的一些原生方法，例如<code>isset()</code>等</p>
+<h2 id="数据表-table-和-name"><a href="#数据表-table-和-name" class="headerlink" title="数据表 table 和 name"></a>数据表 <code>table</code> 和 <code>name</code></h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用table必须完整数据库名</span></span><br><span class="line">$select = Db::table(<span class="string">'shop_goods'</span>)-&gt;where(<span class="string">'id'</span>,<span class="string">'10'</span>)-&gt;select();</span><br><span class="line">print_r($select-&gt;toArray());</span><br><span class="line"><span class="comment"># 使用name数据库需要设置前缀，就可以不用写前缀</span></span><br><span class="line">$select = Db::name(<span class="string">'shop_goods'</span>)-&gt;where(<span class="string">'id'</span>,<span class="string">'11'</span>)-&gt;select();</span><br><span class="line">print_r($select-&gt;toArray());</span><br><span class="line"><span class="comment"># 数据库设置前缀，无前缀访问</span></span><br><span class="line">$select = Db::name(<span class="string">'list'</span>)-&gt;where(<span class="string">'id'</span>,<span class="string">'12'</span>)-&gt;select();</span><br><span class="line">print_r($select-&gt;toArray());</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>前缀设置在database.php文件中</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">return</span> [</span><br><span class="line">    <span class="string">'connections'</span>     =&gt; [</span><br><span class="line">        <span class="string">'mysql'</span> =&gt; [</span><br><span class="line">            <span class="comment">// 数据库表前缀</span></span><br><span class="line">            <span class="string">'prefix'</span>  =&gt; Env::get(<span class="string">'database.prefix'</span>, <span class="string">'shop_'</span>),</span><br><span class="line">        ]</span><br><span class="line">    ]</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+
+
+
+<p>加油</p>
+<p><img src="https://raw.githubusercontent.com/RoyKun1/ImageUploads/master/HexoImages/sponge_baby.jpg" alt=""></p>
+]]></content>
+      <tags>
+        <tag>thinkphp6</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Thinkphp6——项目配置</title>
     <url>/2019/12/27/Thinkphp6%E2%80%94%E2%80%94%E9%A1%B9%E7%9B%AE%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<h1 id="Thinkphp6——项目配置"><a href="#Thinkphp6——项目配置" class="headerlink" title="Thinkphp6——项目配置"></a>Thinkphp6——项目配置</h1><ul>
@@ -150,8 +554,9 @@
 <li><p>要使用env，必须先引入 <code>think\facade\Env</code> 门面类</p>
 </li>
 <li><p>环境变量的获取不区分大小写</p>
-<img src="https://github.com/RoyKun1/roykun1.github.io/uploads/gitBlog/images/database.png" alt="图片1" style="zoom: 67%;" /></li>
+</li>
 </ul>
+<p><img src="https://raw.githubusercontent.com/RoyKun1/ImageUploads/master/HexoImages/database.png" alt=""></p>
 ]]></content>
       <tags>
         <tag>thinkphp6</tag>
