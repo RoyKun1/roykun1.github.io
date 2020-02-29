@@ -413,189 +413,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/29/Thinkphp6%E2%80%94%E2%80%94%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E7%AF%87/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Roy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/Roy.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RoyBlog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/29/Thinkphp6%E2%80%94%E2%80%94%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E7%AF%87/" itemprop="url">Thinkphp6——环境配置篇</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-29T11:28:56+08:00">
-                2020-02-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="thinkphp6基础笔记-连载"><a href="#thinkphp6基础笔记-连载" class="headerlink" title="thinkphp6基础笔记[连载]"></a>thinkphp6基础笔记[连载]</h1><h2 id="环境配置篇"><a href="#环境配置篇" class="headerlink" title="环境配置篇"></a>环境配置篇</h2><p>主流的PHP框架有Laravel，Thinkphp，Yii，作为一款国产轻量级的中型框架，有易于上手，有丰富的中文文档，框架的兼容性较强等优点，目前已更新至tp6。</p>
-<h3 id="一、安装"><a href="#一、安装" class="headerlink" title="一、安装"></a>一、安装</h3><ul>
-<li><p><code>6.0</code> 版本开始，必须通过 <code>Composer</code> 方式安装和更新，无法通过 <code>Git</code> 下载安装。</p>
-</li>
-<li><p>PHP &gt;= 7.1.0</p>
-<p>在windows中，<a href="https://getcomposer.org/Composer-Setup.exe" target="_blank" rel="noopener">下载Composer软件</a></p>
-<blockquote>
-<p>第一步：双击下载好的composer运行程序<br>第二步：选择要安装的盘符<br>第三步：选择php版本。如果你是集成包环境，就到集成包里找php<br>第四步：全部下一步</p>
-</blockquote>
-<p>设置 Composer 下载源</p>
-<ul>
-<li>先设置 <code>Composer</code> 的下载源，也是镜像地址</li>
-<li>在命令行窗口或控制台 输入</li>
-</ul>
-<blockquote>
-<p>composer config -g repo.packagist composer <a href="https://packagist.phpcomposer.com" target="_blank" rel="noopener">https://packagist.phpcomposer.com</a></p>
-</blockquote>
-<ul>
-<li>国外的网站速度慢，官网建议使用国内镜像（阿里云）</li>
-</ul>
-<blockquote>
-<p>composer config -g repo.packagist composer <a href="https://mirrors.aliyun.com/composer" target="_blank" rel="noopener">https://mirrors.aliyun.com/composer</a></p>
-</blockquote>
-<p>安装ThinkPHP6</p>
-<ul>
-<li>先切换到你自己的php环境根目录</li>
-</ul>
-<blockquote>
-<p>cd d:/phpstudy/www</p>
-</blockquote>
-<ul>
-<li>在执行下载<code>Thinkphp6</code>命令。最后的tp6，是新建的tp6目录，可自行更改</li>
-</ul>
-<blockquote>
-<p>composer create-project topthink/think tp</p>
-</blockquote>
-<ul>
-<li>更新<code>Thinkphp6</code>核心</li>
-</ul>
-<blockquote>
-<p>composer update topthink/framework</p>
-</blockquote>
-<ul>
-<li>注：安装和更新命令所在的目录是不同的，更新必须在你的应用根目录下面执行</li>
-</ul>
-<p>目录结构</p>
-<ul>
-<li><p>6.0版本目录结构的主要变化是核心框架纳入<code>vendor</code>目录，然后原来的<code>application</code>目录变成<code>app</code>目录。</p>
-</li>
-<li><p>安装后的目录结构就是一个单应用模式</p>
-</li>
-<li><p>在 <code>mac</code> 或者 <code>linux</code> 环境下面，注意需要设置 <code>runtime</code> 目录权限为777</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">www  WEB部署目录（或者子目录）</span><br><span class="line">├─app           应用目录</span><br><span class="line">│  ├─controller      控制器目录</span><br><span class="line">│  ├─model           模型目录</span><br><span class="line">│  ├─ ...            更多类库目录</span><br><span class="line">│  │</span><br><span class="line">│  ├─common.php         公共函数文件</span><br><span class="line">│  └─event.php          事件定义文件</span><br><span class="line">│</span><br><span class="line">├─config                配置目录</span><br><span class="line">│  ├─app.php            应用配置</span><br><span class="line">│  ├─cache.php          缓存配置</span><br><span class="line">│  ├─console.php        控制台配置</span><br><span class="line">│  ├─cookie.php         Cookie配置</span><br><span class="line">│  ├─database.php       数据库配置</span><br><span class="line">│  ├─filesystem.php     文件磁盘配置</span><br><span class="line">│  ├─lang.php           多语言配置</span><br><span class="line">│  ├─log.php            日志配置</span><br><span class="line">│  ├─middleware.php     中间件配置</span><br><span class="line">│  ├─route.php          URL和路由配置</span><br><span class="line">│  ├─session.php        Session配置</span><br><span class="line">│  ├─trace.php          Trace配置</span><br><span class="line">│  └─view.php           视图配置</span><br><span class="line">│</span><br><span class="line">├─view            视图目录</span><br><span class="line">├─route                 路由定义目录</span><br><span class="line">│  ├─route.php          路由定义文件</span><br><span class="line">│  └─ ...</span><br><span class="line">│</span><br><span class="line">├─public                WEB目录（对外访问目录）</span><br><span class="line">│  ├─index.php          入口文件</span><br><span class="line">│  ├─router.php         快速测试文件</span><br><span class="line">│  └─.htaccess          用于apache的重写</span><br><span class="line">│</span><br><span class="line">├─extend                扩展类库目录</span><br><span class="line">├─runtime               应用的运行时目录（可写，可定制）</span><br><span class="line">├─vendor                Composer类库目录</span><br><span class="line">├─.example.env          环境变量示例文件</span><br><span class="line">├─composer.json         composer 定义文件</span><br><span class="line">├─LICENSE.txt           授权说明文件</span><br><span class="line">├─README.md             README 文件</span><br><span class="line">├─think                 命令行入口文件</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p>运行<code>Thinkphp6</code></p>
-<ul>
-<li>我使用的是集成环境phpStudy，编辑器sublime，数据库管理工具Navicat</li>
-<li>在Windows中，在C:\Windows\System32\drivers\etc 目录下，打开 hosts文件，设置虚拟域名</li>
-<li>在集成环境——站点管理中将入口执行tp6/public目录下即可</li>
-</ul>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/27/%E6%83%B3%E7%9F%A5%E9%81%93Hexo-next%E7%9A%84%E6%93%8D%E4%BD%9C%E5%90%97%EF%BC%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1167,7 +984,190 @@
 <li><p>要使用env，必须先引入 <code>think\facade\Env</code> 门面类</p>
 </li>
 <li><p>环境变量的获取不区分大小写</p>
-<img src="C:\Users\szspl\Desktop\图片1.png" alt="图片1" style="zoom: 67%;" /></li>
+<img src="https://github.com/RoyKun1/roykun1.github.io/uploads/gitBlog/images/database.png" alt="图片1" style="zoom: 67%;" /></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/25/Thinkphp6%E2%80%94%E2%80%94%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E7%AF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Roy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/Roy.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RoyBlog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/25/Thinkphp6%E2%80%94%E2%80%94%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E7%AF%87/" itemprop="url">Thinkphp6——环境配置篇</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-25T11:28:56+08:00">
+                2019-12-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="thinkphp6基础笔记-连载"><a href="#thinkphp6基础笔记-连载" class="headerlink" title="thinkphp6基础笔记[连载]"></a>thinkphp6基础笔记[连载]</h1><h2 id="环境配置篇"><a href="#环境配置篇" class="headerlink" title="环境配置篇"></a>环境配置篇</h2><p>主流的PHP框架有Laravel，Thinkphp，Yii，作为一款国产轻量级的中型框架，有易于上手，有丰富的中文文档，框架的兼容性较强等优点，目前已更新至tp6。</p>
+<h3 id="一、安装"><a href="#一、安装" class="headerlink" title="一、安装"></a>一、安装</h3><ul>
+<li><p><code>6.0</code> 版本开始，必须通过 <code>Composer</code> 方式安装和更新，无法通过 <code>Git</code> 下载安装。</p>
+</li>
+<li><p>PHP &gt;= 7.1.0</p>
+<p>在windows中，<a href="https://getcomposer.org/Composer-Setup.exe" target="_blank" rel="noopener">下载Composer软件</a></p>
+<blockquote>
+<p>第一步：双击下载好的composer运行程序<br>第二步：选择要安装的盘符<br>第三步：选择php版本。如果你是集成包环境，就到集成包里找php<br>第四步：全部下一步</p>
+</blockquote>
+<p>设置 Composer 下载源</p>
+<ul>
+<li>先设置 <code>Composer</code> 的下载源，也是镜像地址</li>
+<li>在命令行窗口或控制台 输入</li>
+</ul>
+<blockquote>
+<p>composer config -g repo.packagist composer <a href="https://packagist.phpcomposer.com" target="_blank" rel="noopener">https://packagist.phpcomposer.com</a></p>
+</blockquote>
+<ul>
+<li>国外的网站速度慢，官网建议使用国内镜像（阿里云）</li>
+</ul>
+<blockquote>
+<p>composer config -g repo.packagist composer <a href="https://mirrors.aliyun.com/composer" target="_blank" rel="noopener">https://mirrors.aliyun.com/composer</a></p>
+</blockquote>
+<p>安装ThinkPHP6</p>
+<ul>
+<li>先切换到你自己的php环境根目录</li>
+</ul>
+<blockquote>
+<p>cd d:/phpstudy/www</p>
+</blockquote>
+<ul>
+<li>在执行下载<code>Thinkphp6</code>命令。最后的tp6，是新建的tp6目录，可自行更改</li>
+</ul>
+<blockquote>
+<p>composer create-project topthink/think tp</p>
+</blockquote>
+<ul>
+<li>更新<code>Thinkphp6</code>核心</li>
+</ul>
+<blockquote>
+<p>composer update topthink/framework</p>
+</blockquote>
+<ul>
+<li>注：安装和更新命令所在的目录是不同的，更新必须在你的应用根目录下面执行</li>
+</ul>
+<p>目录结构</p>
+<ul>
+<li><p>6.0版本目录结构的主要变化是核心框架纳入<code>vendor</code>目录，然后原来的<code>application</code>目录变成<code>app</code>目录。</p>
+</li>
+<li><p>安装后的目录结构就是一个单应用模式</p>
+</li>
+<li><p>在 <code>mac</code> 或者 <code>linux</code> 环境下面，注意需要设置 <code>runtime</code> 目录权限为777</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">www  WEB部署目录（或者子目录）</span><br><span class="line">├─app           应用目录</span><br><span class="line">│  ├─controller      控制器目录</span><br><span class="line">│  ├─model           模型目录</span><br><span class="line">│  ├─ ...            更多类库目录</span><br><span class="line">│  │</span><br><span class="line">│  ├─common.php         公共函数文件</span><br><span class="line">│  └─event.php          事件定义文件</span><br><span class="line">│</span><br><span class="line">├─config                配置目录</span><br><span class="line">│  ├─app.php            应用配置</span><br><span class="line">│  ├─cache.php          缓存配置</span><br><span class="line">│  ├─console.php        控制台配置</span><br><span class="line">│  ├─cookie.php         Cookie配置</span><br><span class="line">│  ├─database.php       数据库配置</span><br><span class="line">│  ├─filesystem.php     文件磁盘配置</span><br><span class="line">│  ├─lang.php           多语言配置</span><br><span class="line">│  ├─log.php            日志配置</span><br><span class="line">│  ├─middleware.php     中间件配置</span><br><span class="line">│  ├─route.php          URL和路由配置</span><br><span class="line">│  ├─session.php        Session配置</span><br><span class="line">│  ├─trace.php          Trace配置</span><br><span class="line">│  └─view.php           视图配置</span><br><span class="line">│</span><br><span class="line">├─view            视图目录</span><br><span class="line">├─route                 路由定义目录</span><br><span class="line">│  ├─route.php          路由定义文件</span><br><span class="line">│  └─ ...</span><br><span class="line">│</span><br><span class="line">├─public                WEB目录（对外访问目录）</span><br><span class="line">│  ├─index.php          入口文件</span><br><span class="line">│  ├─router.php         快速测试文件</span><br><span class="line">│  └─.htaccess          用于apache的重写</span><br><span class="line">│</span><br><span class="line">├─extend                扩展类库目录</span><br><span class="line">├─runtime               应用的运行时目录（可写，可定制）</span><br><span class="line">├─vendor                Composer类库目录</span><br><span class="line">├─.example.env          环境变量示例文件</span><br><span class="line">├─composer.json         composer 定义文件</span><br><span class="line">├─LICENSE.txt           授权说明文件</span><br><span class="line">├─README.md             README 文件</span><br><span class="line">├─think                 命令行入口文件</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>运行<code>Thinkphp6</code></p>
+<ul>
+<li>我使用的是集成环境phpStudy，编辑器sublime，数据库管理工具Navicat</li>
+<li>在Windows中，在C:\Windows\System32\drivers\etc 目录下，打开 hosts文件，设置虚拟域名</li>
+<li>在集成环境——站点管理中将入口执行tp6/public目录下即可</li>
+</ul>
+</li>
 </ul>
 
           
