@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="thinkphp6," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Thinkphp6——基础与视图篇 ThinkPHP支持传统的MVC（Model-View-Controller）模式以及流行的MVVM（Model-View-ViewModel）模式的应用开发   一、MVC MVC 软件系统分为三个基本部分：模型（Model）、视图（View）和控制器（Controller） ThinkPHP 是一个典型的 MVC 架构   控制器 - 负责转发请求，对请求进">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Thinkphp6——基础与视图">
+<meta property="og:url" content="http://yoursite.com/2020/03/06/%C2%96Thinkphp6%E2%80%94%E2%80%94%E5%9F%BA%E7%A1%80%E4%B8%8E%E8%A7%86%E5%9B%BE/index.html">
+<meta property="og:site_name" content="RoyBlog">
+<meta property="og:description" content="Thinkphp6——基础与视图篇 ThinkPHP支持传统的MVC（Model-View-Controller）模式以及流行的MVVM（Model-View-ViewModel）模式的应用开发   一、MVC MVC 软件系统分为三个基本部分：模型（Model）、视图（View）和控制器（Controller） ThinkPHP 是一个典型的 MVC 架构   控制器 - 负责转发请求，对请求进">
+<meta property="og:image" content="http://bew.czgzweb.com/php/mvc.gif">
+<meta property="og:image" content="c:%5CUsers%5Cszspl%5CDesktop%5C%E5%9B%BE%E7%89%871.png">
+<meta property="article:published_time" content="2020-03-06T02:10:58.000Z">
+<meta property="article:modified_time" content="2020-03-06T02:12:09.881Z">
+<meta property="article:author" content="Roy">
+<meta property="article:tag" content="thinkphp6">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://bew.czgzweb.com/php/mvc.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/06/Thinkphp6——基础与视图/"/>
+
+
+
+
+
+  <title>Thinkphp6——基础与视图 | RoyBlog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">RoyBlog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/06/%C2%96Thinkphp6%E2%80%94%E2%80%94%E5%9F%BA%E7%A1%80%E4%B8%8E%E8%A7%86%E5%9B%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Roy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/Roy.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RoyBlog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Thinkphp6——基础与视图</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-06T10:10:58+08:00">
+                2020-03-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E8%83%BD/" itemprop="url" rel="index">
+                    <span itemprop="name">技能</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Thinkphp6——基础与视图篇"><a href="#Thinkphp6——基础与视图篇" class="headerlink" title="Thinkphp6——基础与视图篇"></a>Thinkphp6——基础与视图篇</h1><ul>
+<li>ThinkPHP支持传统的MVC（Model-View-Controller）模式以及流行的MVVM（Model-View-ViewModel）模式的应用开发</li>
+</ul>
+<hr>
+<h2 id="一、MVC"><a href="#一、MVC" class="headerlink" title="一、MVC"></a>一、MVC</h2><ul>
+<li><code>MVC</code> 软件系统分为三个基本部分：模型（Model）、视图（View）和控制器（Controller）</li>
+<li><code>ThinkPHP</code> 是一个典型的 <code>MVC</code> 架构</li>
+</ul>
+<blockquote>
+<p>控制器 - 负责转发请求，对请求进行处理。<br>视图 - 界面设计人员进行图形界面设计。<br>模型 - 程序员编写程序应有的功能（实现算法等等）、数据库专家进行数据管理和数据库设计(可以实现具体的功能)。</p>
+</blockquote>
+<p><img src="http://bew.czgzweb.com/php/mvc.gif" alt="mvc"></p>
+<hr>
+<h2 id="二、单应用模式访问"><a href="#二、单应用模式访问" class="headerlink" title="二、单应用模式访问"></a>二、单应用模式访问</h2><ul>
+<li>项目访问路径：<a href="http://www.xxx.com/index.php/index/index" target="_blank" rel="noopener">www.tp6.com/index.php/index/index</a></li>
+</ul>
+<blockquote>
+<p>index.php 入口文件，在tp6/public目录下<br>index 控制器<br>index 操作</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">├─app           应用目录</span><br><span class="line">│  ├─controller      控制器目录</span><br><span class="line">│  ├─model           模型目录</span><br><span class="line">│  ├─ ...            更多类库目录</span><br><span class="line">│  │</span><br><span class="line">│  ├─common.php         公共函数文件</span><br><span class="line">│  └─event.php          事件定义文件</span><br><span class="line">│</span><br><span class="line">├─config                配置目录</span><br><span class="line">│  ├─app.php            应用配置</span><br><span class="line">│  ├─cache.php          缓存配置</span><br><span class="line">│  ├─console.php        控制台配置</span><br><span class="line">│  ├─cookie.php         Cookie配置</span><br><span class="line">│  ├─database.php       数据库配置</span><br><span class="line">│  ├─filesystem.php     文件磁盘配置</span><br><span class="line">│  ├─lang.php           多语言配置</span><br><span class="line">│  ├─log.php            日志配置</span><br><span class="line">│  ├─middleware.php     中间件配置</span><br><span class="line">│  ├─route.php          URL和路由配置</span><br><span class="line">│  ├─session.php        Session配置</span><br><span class="line">│  ├─trace.php          Trace配置</span><br><span class="line">│  └─view.php           视图配置</span><br><span class="line">│</span><br><span class="line">├─view            视图目录</span><br><span class="line">├─route                 路由定义目录</span><br><span class="line">│  ├─route.php          路由定义文件</span><br><span class="line">│  └─ ...</span><br><span class="line">│</span><br><span class="line">├─<span class="keyword">public</span>                WEB目录（对外访问目录）</span><br><span class="line">│  ├─index.php          入口文件</span><br><span class="line">│  ├─router.php         快速测试文件</span><br><span class="line">│  └─.htaccess          用于apache的重写</span><br><span class="line">│</span><br><span class="line">├─extend                扩展类库目录</span><br><span class="line">├─runtime               应用的运行时目录（可写，可定制）</span><br><span class="line">├─vendor                Composer类库目录</span><br><span class="line">├─.example.env          环境变量示例文件</span><br><span class="line">├─composer.json         composer 定义文件</span><br><span class="line">├─LICENSE.txt           授权说明文件</span><br><span class="line">├─README.md             README 文件</span><br><span class="line">├─think                 命令行入口文件</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="三、安装视图"><a href="#三、安装视图" class="headerlink" title="三、安装视图"></a>三、安装视图</h2><ul>
+<li>视图功能由\think\View类配合视图驱动（也即模板引擎驱动）类一起完成，新版仅内置了PHP原生模板引擎（主要用于内置的异常页面输出），如果需要使用其它的模板引擎需要单独安装相应的模板引擎扩展</li>
+<li>因此，你需要在命令行运行下面这行指令：</li>
+</ul>
+<blockquote>
+<p>composer require topthink/think-view</p>
+</blockquote>
+<ul>
+<li>视图目录可以在根目录，也可以在app应用目录</li>
+</ul>
+<hr>
+<h2 id="四、模版渲染"><a href="#四、模版渲染" class="headerlink" title="四、模版渲染"></a>四、模版渲染</h2><ul>
+<li>要使用View，必须先引入 <code>think\facade\View</code> 门面类</li>
+<li><code>fetch</code> 方法渲染页面</li>
+</ul>
+<blockquote>
+<p>controller代码</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">app</span>\<span class="title">controller</span>;	<span class="comment">// 命名空间</span></span><br><span class="line"><span class="keyword">use</span> <span class="title">think</span>\<span class="title">facade</span>\<span class="title">View</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Index</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> View::fetch();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:%5CUsers%5Cszspl%5CDesktop%5C%E5%9B%BE%E7%89%871.png" alt="图片1"></p>
+<ul>
+<li>注：一个控制器的类对应一个view视图的目录，这个类中的<strong><em>方法</em></strong>，对应这个目录中的html<strong><em>页面</em></strong></li>
+</ul>
+<hr>
+<h2 id="五、模版变量"><a href="#五、模版变量" class="headerlink" title="五、模版变量"></a>五、模版变量</h2><ul>
+<li>在控制器中使用<code>assign</code> 方法给全局变量赋值，这个变量也叫作模板变量<br>注：要区分模板和模型的概念</li>
+<li>在视图页面中使用 <code>{$name}</code>输出模板变量值</li>
+</ul>
+<blockquote>
+<p>controller代码</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">app</span>\<span class="title">controller</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">think</span>\<span class="title">facade</span>\<span class="title">View</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Index</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">// 模板变量赋值</span></span><br><span class="line">        View::assign(<span class="string">'name'</span>,<span class="string">'欧阳克'</span>);</span><br><span class="line">        View::assign(<span class="string">'email'</span>,<span class="string">'oyk@php.cn'</span>);</span><br><span class="line">        <span class="comment">// 或者批量赋值</span></span><br><span class="line">        View::assign([</span><br><span class="line">            <span class="string">'name'</span>  =&gt; <span class="string">'Roy'</span>,</span><br><span class="line">            <span class="string">'email'</span> =&gt; <span class="string">'szsplyr@163.com'</span></span><br><span class="line">        ]);</span><br><span class="line">        <span class="comment">// 模板输出</span></span><br><span class="line">        <span class="keyword">return</span> View::fetch();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>view代码</p>
+</blockquote>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>ThinkPHP6<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    姓名：&#123;$name&#125;</span><br><span class="line">    <span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">    邮箱：&#123;$email&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="六、模板引擎"><a href="#六、模板引擎" class="headerlink" title="六、模板引擎"></a>六、模板引擎</h2><ul>
+<li><p>我们在页面中使用<code>{$var}</code>输出变量，还可以借助<strong><em>标签</em></strong>，实现更多的功能。</p>
+</li>
+<li><p>模板引擎支持普通标签和XML标签方式两种标签定义，分别用于不同的目的。</p>
+<table>
+<thead>
+<tr>
+<th><strong>标签类型</strong></th>
+<th align="left"><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>普通标签</td>
+<td align="left">主要用于输出变量、函数过滤和做一些基本的运算操作</td>
+</tr>
+<tr>
+<td>XML标签</td>
+<td align="left">也称为标签库标签，主要完成一些逻辑判断、控制和循环输出，并且可扩展</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h2 id="普通标签"><a href="#普通标签" class="headerlink" title="普通标签"></a>普通标签</h2><h3 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h3><table>
+<thead>
+<tr>
+<th><strong>运算符</strong></th>
+<th><strong>示例</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>+</td>
+<td>{$a+$b}</td>
+</tr>
+<tr>
+<td>-</td>
+<td>{$a-$b}</td>
+</tr>
+<tr>
+<td>*</td>
+<td>{$a*$b}</td>
+</tr>
+<tr>
+<td>/</td>
+<td>{$a/$b}</td>
+</tr>
+<tr>
+<td>%</td>
+<td>{$a%$b}</td>
+</tr>
+<tr>
+<td>++</td>
+<td>{$a++} 或 {++$a}</td>
+</tr>
+<tr>
+<td>–</td>
+<td>{$a–} 或{–$a}</td>
+</tr>
+<tr>
+<td>综合运算</td>
+<td>{$a+$b*10+$c}</td>
+</tr>
+<tr>
+<td>三元运算符</td>
+<td>{$a==$b ? ‘yes’ : ‘no’}</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>view文件</p>
+</blockquote>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;$a+$b&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;$a-$b&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;$a*$b&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;$a/$b&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;$a%$b&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;$a++&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;++$a&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;$a--&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;--$a&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;$c ? '存在' : '不存在'&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="模版函数"><a href="#模版函数" class="headerlink" title="模版函数"></a>模版函数</h3><table>
+<thead>
+<tr>
+<th><strong>方法</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>date</td>
+<td>日期格式化（支持各种时间类型）</td>
+</tr>
+<tr>
+<td>format</td>
+<td>字符串格式化</td>
+</tr>
+<tr>
+<td>upper</td>
+<td>转换为大写</td>
+</tr>
+<tr>
+<td>lower</td>
+<td>转换为小写</td>
+</tr>
+<tr>
+<td>first</td>
+<td>输出数组的第一个元素</td>
+</tr>
+<tr>
+<td>last</td>
+<td>输出数组的最后一个元素</td>
+</tr>
+<tr>
+<td>default</td>
+<td>默认值</td>
+</tr>
+<tr>
+<td>raw</td>
+<td>不使用（默认）转义</td>
+</tr>
+<tr>
+<td>md5</td>
+<td>md5加密</td>
+</tr>
+<tr>
+<td>substr</td>
+<td>截取字符串</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>view文件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;&#123;$time|date&#x3D;&#39;Y-m-d H:i:s&#39;&#125;&lt;&#x2F;div&gt;</span><br><span class="line">&lt;div&gt;&#123;$num|format&#x3D;&#39;%02d&#39;&#125;&lt;&#x2F;div&gt;</span><br><span class="line">&lt;div&gt;&#123;$str|upper&#125;&lt;&#x2F;div&gt;</span><br><span class="line">&lt;div&gt;&#123;$str|lower&#125;&lt;&#x2F;div&gt;</span><br><span class="line">&lt;div&gt;&#123;$arr|first&#125;&lt;&#x2F;div&gt;</span><br><span class="line">&lt;div&gt;&#123;$arr|last&#125;&lt;&#x2F;div&gt;</span><br><span class="line">&lt;div&gt;&#123;$default|default&#x3D;&quot;欧阳克&quot;&#125;&lt;&#x2F;div&gt;</span><br><span class="line">&lt;div&gt;&#123;$str|substr&#x3D;0,3&#125;&lt;&#x2F;div&gt;</span><br><span class="line">&lt;div&gt;&#123;$str|md5&#125;&lt;&#x2F;div&gt;</span><br><span class="line">&lt;div&gt;&#123;$str|lower|substr&#x3D;0,3&#125;&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>注：<code>$var|</code>后面接函数</p>
+<hr>
+</li>
+</ul>
+<h2 id="XML标签"><a href="#XML标签" class="headerlink" title="XML标签"></a>XML标签</h2><h3 id="foreach循环标签"><a href="#foreach循环标签" class="headerlink" title="foreach循环标签"></a><code>foreach</code>循环标签</h3><ul>
+<li><p><code>foreach</code> 标签的用法和PHP语法非常接近，用于循环输出数组或者对象的属性。</p>
+<blockquote>
+<p>view文件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;foreach $arr as $v&#125;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;span&gt;ID：&#123;$v[&#39;id&#39;]&#125;&lt;&#x2F;span&gt;</span><br><span class="line">        &lt;span&gt;姓名：&#123;$v[&#39;name&#39;]&#125;&lt;&#x2F;span&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">&#123;&#x2F;foreach&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3></li>
+</ul>
+<h3 id="volist循环标签"><a href="#volist循环标签" class="headerlink" title="volist循环标签"></a><code>volist</code>循环标签</h3><ul>
+<li>二维数组的结果输出</li>
+<li><code>name</code> 模板赋值的变量名称</li>
+<li><code>id</code> 当前的循环变量，可以随意起名</li>
+<li><code>key</code> 下标，从1开始，默认变量i</li>
+<li><code>offset</code> 开始行数</li>
+<li><code>length</code> 获取行数</li>
+<li><code>empty</code> 如果数据为空，显示此文字</li>
+</ul>
+<blockquote>
+<p>view文件</p>
+</blockquote>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;volist name="arr" id="v" key="k"  offset="1" length="2"&#125;</span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">span</span>&gt;</span>ID：&#123;$v['id']&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">span</span>&gt;</span>姓名：&#123;$v['name']&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">span</span>&gt;</span>下标：&#123;$k&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">&#123;/volist&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="if-判断标签"><a href="#if-判断标签" class="headerlink" title="if 判断标签"></a><code>if</code> 判断标签</h3><blockquote>
+<p>view文件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;if $status &#x3D;&#x3D; 1&#125;</span><br><span class="line">    &lt;div&gt;开启&lt;&#x2F;div&gt;</span><br><span class="line">&#123;&#x2F;if&#125;</span><br><span class="line"></span><br><span class="line">&#123;if $status &#x3D;&#x3D; 0&#125;</span><br><span class="line">    &lt;div&gt;关闭&lt;&#x2F;div&gt;</span><br><span class="line">&#123;else&#x2F;&#125;</span><br><span class="line">    &lt;div&gt;开启&lt;&#x2F;div&gt;</span><br><span class="line">&#123;&#x2F;if&#125;</span><br><span class="line"></span><br><span class="line">&#123;if $order_status &#x3D;&#x3D; 0&#125;</span><br><span class="line">    &lt;div&gt;未支付&lt;&#x2F;div&gt;</span><br><span class="line">&#123;elseif $order_status &#x3D;&#x3D; 1&#x2F;&#125;</span><br><span class="line">    &lt;div&gt;已支付 待发货&lt;&#x2F;div&gt;</span><br><span class="line">&#123;elseif $order_status &#x3D;&#x3D; 2&#x2F;&#125;</span><br><span class="line">    &lt;div&gt;已发货 待收货&lt;&#x2F;div&gt;</span><br><span class="line">&#123;elseif $order_status &#x3D;&#x3D; 3&#x2F;&#125;</span><br><span class="line">    &lt;div&gt;已收货 待评论&lt;&#x2F;div&gt;</span><br><span class="line">&#123;elseif $order_status &#x3D;&#x3D; 4&#x2F;&#125;</span><br><span class="line">    &lt;div&gt;已完成&lt;&#x2F;div&gt;</span><br><span class="line">&#123;&#x2F;if&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="switch-判断标签"><a href="#switch-判断标签" class="headerlink" title="switch 判断标签"></a><code>switch</code> 判断标签</h3><blockquote>
+<p>view文件</p>
+</blockquote>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;switch $order_status&#125;</span><br><span class="line">    &#123;case 0 &#125;<span class="tag">&lt;<span class="name">div</span>&gt;</span>未支付<span class="tag">&lt;/<span class="name">div</span>&gt;</span>&#123;/case&#125;</span><br><span class="line">    &#123;case 1 &#125;<span class="tag">&lt;<span class="name">div</span>&gt;</span>已支付 待发货<span class="tag">&lt;/<span class="name">div</span>&gt;</span>&#123;/case&#125;</span><br><span class="line">    &#123;case 2 &#125;<span class="tag">&lt;<span class="name">div</span>&gt;</span>已发货 待收货<span class="tag">&lt;/<span class="name">div</span>&gt;</span>&#123;/case&#125;</span><br><span class="line">    &#123;case 3 &#125;<span class="tag">&lt;<span class="name">div</span>&gt;</span>已收货 待评论<span class="tag">&lt;/<span class="name">div</span>&gt;</span>&#123;/case&#125;</span><br><span class="line">    &#123;case 4 &#125;<span class="tag">&lt;<span class="name">div</span>&gt;</span>已完成<span class="tag">&lt;/<span class="name">div</span>&gt;</span>&#123;/case&#125;</span><br><span class="line">&#123;/switch&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="包含文件"><a href="#包含文件" class="headerlink" title="包含文件"></a>包含文件</h3><ul>
+<li><code>include</code> 标签，引入模版文件</li>
+<li><code>load</code> 标签，引入资源文件(css、js)</li>
+</ul>
+<blockquote>
+<p>view文件，把头部和尾部分文件</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="keyword">include</span> file=<span class="string">"public/header"</span> /&#125;</span><br><span class="line">&#123;<span class="keyword">include</span> file=<span class="string">"public/left"</span> /&#125;</span><br><span class="line"></span><br><span class="line">&#123;load href=<span class="string">"/static/layui/css/layui.css"</span> /&#125;</span><br><span class="line">&#123;load href=<span class="string">"/static/layui/layui.js"</span> /&#125;</span><br><span class="line"></span><br><span class="line">&#123;<span class="keyword">include</span> file=<span class="string">"public/tail"</span> /&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="其他标签"><a href="#其他标签" class="headerlink" title="其他标签"></a>其他标签</h3><ul>
+<li>条件标签</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>标签</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>in</td>
+<td>判断变量是否存在某些值</td>
+</tr>
+<tr>
+<td>notin</td>
+<td>判断变量是否不存在某些值</td>
+</tr>
+<tr>
+<td>between</td>
+<td>判断变量是否存在某些值</td>
+</tr>
+<tr>
+<td>notbetween</td>
+<td>判断变量是否不存在某些范围值</td>
+</tr>
+<tr>
+<td>present</td>
+<td>判断某个变量是否 已定义</td>
+</tr>
+<tr>
+<td>notpresent</td>
+<td>判断某个变量是否 未定义</td>
+</tr>
+<tr>
+<td>empty</td>
+<td>判断某个变量是否为空</td>
+</tr>
+<tr>
+<td>notempty</td>
+<td>判断某个变量是否不为空</td>
+</tr>
+<tr>
+<td>defined</td>
+<td>判断某个常量是否 已定义</td>
+</tr>
+<tr>
+<td>notdefined</td>
+<td>判断某个常量是否 未定义</td>
+</tr>
+</tbody></table>
+<ul>
+<li>比较标签</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>标签</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>eq</td>
+<td>等于</td>
+</tr>
+<tr>
+<td>neq</td>
+<td>不等于</td>
+</tr>
+<tr>
+<td>gt</td>
+<td>大于</td>
+</tr>
+<tr>
+<td>egt</td>
+<td>大于等于</td>
+</tr>
+<tr>
+<td>lt</td>
+<td>小于</td>
+</tr>
+<tr>
+<td>elt</td>
+<td>小于等于</td>
+</tr>
+<tr>
+<td>heq</td>
+<td>恒等于</td>
+</tr>
+<tr>
+<td>nheq</td>
+<td>不恒等于</td>
+</tr>
+</tbody></table>
+<ul>
+<li>循环标签</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>标签</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>for</td>
+<td>计数循环</td>
+</tr>
+</tbody></table>
+<ul>
+<li>杂项标签</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>标签</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>literal</td>
+<td>原样输出</td>
+</tr>
+<tr>
+<td>php</td>
+<td>使用原生php代码</td>
+</tr>
+</tbody></table>
+<hr>
+<blockquote>
+<p>注：别担心，孰能生巧！</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/thinkphp6/" rel="tag"># thinkphp6</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/02/27/%E6%83%B3%E7%9F%A5%E9%81%93Hexo-next%E7%9A%84%E6%93%8D%E4%BD%9C%E5%90%97%EF%BC%9F/" rel="next" title="想知道Hexo&next的操作吗？">
+                <i class="fa fa-chevron-left"></i> 想知道Hexo&next的操作吗？
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80ODgzMS8yNTMyNQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/Roy.jpg"
+                alt="Roy" />
+            
+              <p class="site-author-name" itemprop="name">Roy</p>
+              <p class="site-description motion-element" itemprop="description">Hope every day life is meaningful</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Thinkphp6——基础与视图篇"><span class="nav-number">1.</span> <span class="nav-text">Thinkphp6——基础与视图篇</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、MVC"><span class="nav-number">1.1.</span> <span class="nav-text">一、MVC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、单应用模式访问"><span class="nav-number">1.2.</span> <span class="nav-text">二、单应用模式访问</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、安装视图"><span class="nav-number">1.3.</span> <span class="nav-text">三、安装视图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、模版渲染"><span class="nav-number">1.4.</span> <span class="nav-text">四、模版渲染</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、模版变量"><span class="nav-number">1.5.</span> <span class="nav-text">五、模版变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、模板引擎"><span class="nav-number">1.6.</span> <span class="nav-text">六、模板引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#普通标签"><span class="nav-number">1.7.</span> <span class="nav-text">普通标签</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#运算符"><span class="nav-number">1.7.1.</span> <span class="nav-text">运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模版函数"><span class="nav-number">1.7.2.</span> <span class="nav-text">模版函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XML标签"><span class="nav-number">1.8.</span> <span class="nav-text">XML标签</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#foreach循环标签"><span class="nav-number">1.8.1.</span> <span class="nav-text">foreach循环标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#null"><span class="nav-number">1.8.2.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#volist循环标签"><span class="nav-number">1.8.3.</span> <span class="nav-text">volist循环标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#if-判断标签"><span class="nav-number">1.8.4.</span> <span class="nav-text">if 判断标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#switch-判断标签"><span class="nav-number">1.8.5.</span> <span class="nav-text">switch 判断标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#包含文件"><span class="nav-number">1.8.6.</span> <span class="nav-text">包含文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他标签"><span class="nav-number">1.8.7.</span> <span class="nav-text">其他标签</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Roy</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
