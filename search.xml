@@ -16,6 +16,8 @@
 </blockquote>
 <p><img src="http://bew.czgzweb.com/php/mvc.gif" alt="mvc"></p>
 <hr>
+<a id="more"></a>
+
 <h2 id="二、单应用模式访问"><a href="#二、单应用模式访问" class="headerlink" title="二、单应用模式访问"></a>二、单应用模式访问</h2><ul>
 <li>项目访问路径：<a href="http://www.xxx.com/index.php/index/index" target="_blank" rel="noopener">www.tp6.com/index.php/index/index</a></li>
 </ul>
