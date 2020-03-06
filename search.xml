@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>How to use Hexo</title>
+    <title>How-to-use-Hexo</title>
     <url>/2020/02/27/How-to-use-Hexo/</url>
     <content><![CDATA[<h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><ul>
 <li>作为学习PythonWeb的入门，依托github搭建个人博客，以后的项目代码和笔记均托管在这里。由于静态网站加载快易被搜索引擎检索到，我们使用hexo(a fast simple&amp;powerful blog framework)搭建框架。</li>
@@ -554,9 +554,6 @@
 <p>控制器 - 负责转发请求，对请求进行处理。<br>视图 - 界面设计人员进行图形界面设计。<br>模型 - 程序员编写程序应有的功能（实现算法等等）、数据库专家进行数据管理和数据库设计(可以实现具体的功能)。</p>
 </blockquote>
 <p><img src="http://bew.czgzweb.com/php/mvc.gif" alt="mvc"></p>
-<hr>
-<a id="more"></a>
-
 <h2 id="二、单应用模式访问"><a href="#二、单应用模式访问" class="headerlink" title="二、单应用模式访问"></a>二、单应用模式访问</h2><ul>
 <li>项目访问路径：<a href="http://www.xxx.com/index.php/index/index" target="_blank" rel="noopener">www.tp6.com/index.php/index/index</a></li>
 </ul>
