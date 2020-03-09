@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<html class="theme-next muse use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -94,7 +94,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Pisces',
+    scheme: 'Muse',
     version: '5.1.4',
     sidebar: {"position":"right","display":"hide","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
     fancybox: true,
@@ -388,7 +388,9 @@
         
           
           一、简介
-作为学习PythonWeb的入门，依托github搭建个人博客，以后的项目代码和笔记均托管在这里。由于静态网站加载快易被搜索引擎检索到，我们使用hexo(a fast simple&amp;
+作为学习PythonWeb的入门，依托github搭建个人博客，以后的项目代码和笔记均托管在这里。由于静态网站加载快易被搜索引擎检索到，我们使用hexo(a fast simple&amp;powerful blog framework)搭建框架。
+
+二、站点搭建1. git &amp; 
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -543,7 +545,7 @@
 这里将Python常用的基础知识整理回顾，实践出真知
 IDE使用PyCharm
 
-Python基操字符串123456789101112131415161718192021222324
+Python基操字符串1234567891011121314151617181920212223242526272829303132333435363738394041mystr = 'RoyKun'
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -655,8 +657,8 @@ Python基操字符串123456789101112131415161718192021222324
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E8%83%BD/" itemprop="url" rel="index">
-                    <span itemprop="name">技能</span>
+                  <a href="/categories/%E5%85%A8%E6%A0%88/" itemprop="url" rel="index">
+                    <span itemprop="name">全栈</span>
                   </a>
                 </span>
 
@@ -699,6 +701,11 @@ ThinkPHP6 数据库和模型操作已经独立为ThinkORM库
 要使用Db类必须使用门面方式（ think\facade\Db ）调用
 数据库操作统一入口： Db::
 
+我们可以在Navicat工具——查询中执行SQL命令，例如：
+
+创建数据库
+
+1234567891
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -810,8 +817,8 @@ ThinkPHP6 数据库和模型操作已经独立为ThinkORM库
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E8%83%BD/" itemprop="url" rel="index">
-                    <span itemprop="name">技能</span>
+                  <a href="/categories/%E5%85%A8%E6%A0%88/" itemprop="url" rel="index">
+                    <span itemprop="name">全栈</span>
                   </a>
                 </span>
 
@@ -853,7 +860,7 @@ ThinkPHP6 数据库和模型操作已经独立为ThinkORM库
 Config目录下面是tp6的常规配置，可以自定义配置并引入
 配置一般均以return返回
 
-123456789101112131415├─config（配置目录）│ 
+123456789101112131415├─config（配置目录）│  ├─app.php            应用配置│  ├─cache.php          
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -965,8 +972,8 @@ Config目录下面是tp6的常规配置，可以自定义配置并引入
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E8%83%BD/" itemprop="url" rel="index">
-                    <span itemprop="name">技能</span>
+                  <a href="/categories/%E5%85%A8%E6%A0%88/" itemprop="url" rel="index">
+                    <span itemprop="name">全栈</span>
                   </a>
                 </span>
 
@@ -1008,7 +1015,8 @@ Config目录下面是tp6的常规配置，可以自定义配置并引入
 ThinkPHP支持传统的MVC（Model-View-Controller）模式以及流行的MVVM（Model-View-ViewModel）模式的应用开发
 
 
-
+一、MVC
+MVC 软件系统分为三个基本部分：模型（Model）、视图（View）和控制器（Cont
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1120,8 +1128,8 @@ ThinkPHP支持传统的MVC（Model-View-Controller）模式以及流行的MVVM�
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E8%83%BD/" itemprop="url" rel="index">
-                    <span itemprop="name">技能</span>
+                  <a href="/categories/%E5%85%A8%E6%A0%88/" itemprop="url" rel="index">
+                    <span itemprop="name">全栈</span>
                   </a>
                 </span>
 
@@ -1159,7 +1167,9 @@ ThinkPHP支持传统的MVC（Model-View-Controller）模式以及流行的MVVM�
       
         
           
-          thinkphp6基础笔记[连载]环境配置篇主流的PHP框架有Laravel，Thinkphp，Yii，作为一款国产轻量级的中型框架，有易于上手，有丰富的中文文档，框架的兼容性较强等优点，目前已更新至
+          thinkphp6基础笔记[连载]环境配置篇主流的PHP框架有Laravel，Thinkphp，Yii，作为一款国产轻量级的中型框架，有易于上手，有丰富的中文文档，框架的兼容性较强等优点，目前已更新至tp6。
+一、安装
+6.0 版本开始，必须通过 Composer 方式安装和更新，无法通过 Git 
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1271,8 +1281,8 @@ ThinkPHP支持传统的MVC（Model-View-Controller）模式以及流行的MVVM�
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E8%83%BD/" itemprop="url" rel="index">
-                    <span itemprop="name">技能</span>
+                  <a href="/categories/%E5%85%A8%E6%A0%88/" itemprop="url" rel="index">
+                    <span itemprop="name">全栈</span>
                   </a>
                 </span>
 
@@ -1319,7 +1329,10 @@ Vue实例的生命周期生命周期基本流程图：
 从图中即可看出操作的顺序，下面逐个解释
 
 beforeCreate
-实例
+实例刚在内存中被创建出来，此时，还没有初始化好 data 和 methods 属性
+
+created
+实
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1431,8 +1444,8 @@ beforeCreate
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E8%83%BD/" itemprop="url" rel="index">
-                    <span itemprop="name">技能</span>
+                  <a href="/categories/%E5%85%A8%E6%A0%88/" itemprop="url" rel="index">
+                    <span itemprop="name">全栈</span>
                   </a>
                 </span>
 
@@ -1476,7 +1489,8 @@ beforeCreate
 组件系统让我们可以用独立可复用的小组件来构建大型应用，几乎任意类型的应用的界面都可以抽象为一个组件树
 
 
-
+语法
+123456789101112131415161718192021// 注册一个全局组件// 
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1588,8 +1602,8 @@ beforeCreate
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E8%83%BD/" itemprop="url" rel="index">
-                    <span itemprop="name">技能</span>
+                  <a href="/categories/%E5%85%A8%E6%A0%88/" itemprop="url" rel="index">
+                    <span itemprop="name">全栈</span>
                   </a>
                 </span>
 
@@ -1634,7 +1648,11 @@ beforeCreate
 安装作为一款构建前端用户界面的JavaScript框架，我们只需要新建.html文件并引入Vue.js文件即可
 
 Vue官网
-编辑器
+编辑器使用Sublime或者其他
+其他的安装方法和应用构建参看教程
+
+基本操作
+创建一个Vue实例，并绑定
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1813,7 +1831,7 @@ Vue官网
 
 
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
 
 
 
@@ -1907,13 +1925,6 @@ Vue官网
 
   
   
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
-
-
 
   
 
