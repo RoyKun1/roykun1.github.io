@@ -1,38 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>海上归来</title>
+    <url>/2020/03/09/%E6%B5%B7%E4%B8%8A%E5%BD%92%E6%9D%A5/</url>
+    <content><![CDATA[<h1 id="PS基础案例——海上归来"><a href="#PS基础案例——海上归来" class="headerlink" title="PS基础案例——海上归来"></a>PS基础案例——海上归来</h1><h2 id="案例展示"><a href="#案例展示" class="headerlink" title="案例展示"></a>案例展示</h2><p>素材<a href="https://pan.baidu.com/s/12FUpUjc2cwqHCmGNLwbNyw" target="_blank" rel="noopener">链接</a></p>
+<p>提取码：mkwi</p>
+<p>工具：PS2019</p>
+<h2 id="抠图"><a href="#抠图" class="headerlink" title="抠图"></a>抠图</h2><ul>
+<li><p>女王</p>
+<ol>
+<li><p>使用快速选择工具选出人物主体</p>
+</li>
+<li><p>新建蒙版</p>
+</li>
+<li><p>边缘部分可以使用黑色笔刷（前景黑色画笔）擦除，但我们发现还是会有一些黑色痕迹</p>
+</li>
+<li><p>双击进入蒙版勾选<strong>净化颜色</strong></p>
+</li>
+<li><p>按住<code>ctrl</code>键单击图层缩览图，使用画笔工具吸取羽毛其他部分颜色涂抹痕迹部分</p>
+</li>
+<li><p>将缩览图转换为智能对象（使用净化颜色后多出复制图层且不再是智能对象，可以复制最上方图层，删除蒙版，变换为智能对象，将下面的蒙版移上去），最后效果如下：</p>
+<p><img src="https://raw.githubusercontent.com/RoyKun1/ImageUploads/master/PSImages/1.png" alt=""></p>
+</li>
+</ol>
+</li>
+<li><p>添加海浪</p>
+<ol>
+<li><code>ctrl+T</code>自由变换调整比例</li>
+<li><code>ctrl+J</code>复制该图层，水平翻转并调整比例，不显得对称即可</li>
+<li>添加图层蒙版，前景色黑色，使用画笔工具在接缝处涂抹</li>
+<li>使用仿制图章工具将翅膀处的白色海浪去除</li>
+</ol>
+</li>
+<li><p>添加大地</p>
+<ol>
+<li>放置在最下层，给海洋添加蒙版，擦除人物两侧部分</li>
+</ol>
+</li>
+<li><p>添加海洋边缘效果</p>
+<ol>
+<li><p>降低不透明度，使用自由变换工具中的变形，调整海岸边与海洋边缘大致重合</p>
+</li>
+<li><p>放在人物图层下方，新建黑色蒙版，擦出边缘部分（白色画笔）</p>
+</li>
+<li><p>添加曲线调整图层，建立剪切蒙版，降低整体明度；绿色通道，添加绿色成分</p>
+</li>
+<li><p>调整一下蒙版边缘，自由变换水平翻转到另一边</p>
+<p><img src="https://raw.githubusercontent.com/RoyKun1/ImageUploads/master/PSImages/2.png" alt=""></p>
+</li>
+</ol>
+</li>
+<li><p>添加动物</p>
+<ol>
+<li>使用<code>选择——主体</code>功能，对于边缘部分可以使用净化颜色，也可以新建纯色图层查看效果</li>
+<li>大象可以快速选择白色部分，然后<code>ctrl+i</code>反选，放置在后面压住亮色</li>
+</ol>
+</li>
+<li><p>统一明度</p>
+<ol>
+<li><p>最上方新建黑白图层，可以看出明暗关系</p>
+</li>
+<li><p>让地面、大象和海浪暗一些，选择地面添加<code>色阶</code>调整图层</p>
+</li>
+<li><p>将海浪合并为一组调整</p>
+</li>
+<li><p>可以使用黑色蒙版让效果只在部分显示</p>
+<p><img src="https://raw.githubusercontent.com/RoyKun1/ImageUploads/master/PSImages/5.png" alt=""></p>
+</li>
+</ol>
+</li>
+<li><p>调整饱和度</p>
+<p>任何物体处于这个环境当中时，色调会受到环境影响而出现色彩倾向</p>
+<ol>
+<li>上方新建纯色图层，<code>S</code>值为100，模式为饱和度</li>
+<li>可以看出画面主体部分偏暖</li>
+<li>在相应图层上新建曲线调整图层，蓝色通道向上拖动，如果发红，在红色通道向上拖动</li>
+<li>可以双击曲线图层，在图层样式中将亮暗通道分开调整</li>
+</ol>
+</li>
+<li><p>添加投影</p>
+<ol>
+<li><p>复制图层（比如熊），双击进入图层选择<strong>颜色叠加</strong>吸取地面深色部分</p>
+</li>
+<li><p>自由变换，垂直翻转，调整投影位置，降低不透明度</p>
+</li>
+<li><p>上方新建图层，吸取地面颜色，加深脚步投影</p>
+<p><img src="https://raw.githubusercontent.com/RoyKun1/ImageUploads/master/PSImages/7.png" alt=""></p>
+</li>
+</ol>
+</li>
+<li><p>最后调整主题的位置关系即可</p>
+</li>
+<li><p>哈哈就是玩玩！</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Show</category>
+      </categories>
+      <tags>
+        <tag>PS</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>How-to-use-Hexo</title>
-    <url>/2020/02/27/How-to-use-Hexo/</url>
-    <content><![CDATA[<h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><ul>
+    <url>/2020/02/12/How-to-use-Hexo/</url>
+    <content><![CDATA[<h1 id="使用python和github搭建个人博客"><a href="#使用python和github搭建个人博客" class="headerlink" title="使用python和github搭建个人博客"></a>使用python和github搭建个人博客</h1><h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><ul>
 <li>作为学习PythonWeb的入门，依托github搭建个人博客，以后的项目代码和笔记均托管在这里。由于静态网站加载快易被搜索引擎检索到，我们使用hexo(a fast simple&amp;powerful blog framework)搭建框架。</li>
 </ul>
 <h2 id="二、站点搭建"><a href="#二、站点搭建" class="headerlink" title="二、站点搭建"></a>二、站点搭建</h2><h3 id="1-git-amp-GitHub"><a href="#1-git-amp-GitHub" class="headerlink" title="1. git &amp; GitHub"></a>1. git &amp; GitHub</h3><ul>
-<li><p>系统学习了git，自己的github账号：</p>
+<li>系统学习了git，自己的github账号：</li>
+</ul>
 <blockquote>
 <p><a href="https://github.com/RoyKun1" target="_blank" rel="noopener">https://github.com/RoyKun1</a></p>
 </blockquote>
-</li>
-<li><p>搭建网站需要建立名为/roykun1.github.io的git仓库，可以访问：</p>
+<ul>
+<li>搭建网站需要建立名为/roykun1.github.io的git仓库，可以访问：</li>
+</ul>
 <blockquote>
 <p><a href="https://roykun1.github.io/" target="_blank" rel="noopener">https://roykun1.github.io/</a></p>
 </blockquote>
 <h3 id="2-Hexo"><a href="#2-Hexo" class="headerlink" title="2. Hexo"></a>2. Hexo</h3><blockquote>
 <p><a href="https://hexo.io/" target="_blank" rel="noopener">https://hexo.io/</a></p>
 </blockquote>
-</li>
-<li><p>可以参考这个教程学习：</p>
+<ul>
+<li>可以参考这个教程学习：</li>
+</ul>
 <blockquote>
 <p><a href="https://blog.csdn.net/u011475210/article/details/79023429#%E5%89%8D%E8%A8%80" target="_blank" rel="noopener">https://blog.csdn.net/u011475210/article/details/79023429#%E5%89%8D%E8%A8%80</a></p>
 </blockquote>
-</li>
-</ul>
 <h4 id="ensp-ensp-Hexo的优点"><a href="#ensp-ensp-Hexo的优点" class="headerlink" title="&ensp;&ensp;Hexo的优点"></a>&ensp;&ensp;Hexo的优点</h4><ul>
-<li><p>支持Markdown格式</p>
-</li>
-<li><p>有众多优秀插件和主题</p>
-</li>
-<li><p>文档完善</p>
-<h4 id="ensp-ensp-安装和使用"><a href="#ensp-ensp-安装和使用" class="headerlink" title="&ensp;&ensp;安装和使用"></a>&ensp;&ensp;安装和使用</h4></li>
+<li>支持Markdown格式</li>
+<li>有众多优秀插件和主题</li>
+<li>文档完善</li>
+</ul>
+<h4 id="ensp-ensp-安装和使用"><a href="#ensp-ensp-安装和使用" class="headerlink" title="&ensp;&ensp;安装和使用"></a>&ensp;&ensp;安装和使用</h4><ul>
 <li><p>安装node.js</p>
 <ol>
 <li><p>官网下载：<br><code>https://nodejs.org/en/download/</code></p>
@@ -46,7 +148,8 @@
 <li><p>新版的Node.js已自带npm，安装Node.js时会一起安装，npm的作用就是对Node.js依赖的包进行管理</p>
 </li>
 <li><p>需要进行一些环境变量的配置：<code>https://blog.csdn.net/cai454692590/article/details/86093297</code></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">![](https:&#x2F;&#x2F;i.imgur.com&#x2F;z9Cnjew.png)</span><br><span class="line">由于markdown的国内服务器好像被屏蔽，需要翻q才能显示</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">![](https:&#x2F;&#x2F;i.imgur.com&#x2F;z9Cnjew.png)</span><br><span class="line">由于markdown的国内服务器好像被屏蔽，需要翻q才能显示</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
 </li>
 <li><p>安装hexo</p>
@@ -61,7 +164,7 @@
 </li>
 <li><p>使用命令：<code>hexo init ./githubBlog</code> 由于bash有问题，在cmd中执行；执行成功会显示<code>INFO  Start blogging with Hexo!</code></p>
 </li>
-<li><p>进入目录，执行命令：<br> <code>npm install</code>或者<code>sudo npm install</code></p>
+<li><p>进入目录，执行命令：<br><code>npm install</code>或者<code>sudo npm install</code></p>
 </li>
 <li><p>启动服务：<code>hexo server</code><br>会有提示信息：<code>INFO  Hexo is running at http://localhost:4000 . Press Ctrl+C to stop.</code><br>我们访问这个地址即可看到hexo为我们初始化的界面！</p>
 </li>
@@ -84,6 +187,31 @@
 <h2 id="三、编写个人博客"><a href="#三、编写个人博客" class="headerlink" title="三、编写个人博客"></a>三、编写个人博客</h2><blockquote>
 <p>使用命令：<code>hexo new &quot;title&quot;</code>即可创建文章，一般在source/_post文件夹下<br>头部包含时间、标签，可以修改<br>编辑好文章后使用<code>hexo clean</code>和<code>hexo d -g</code>提交即可</p>
 </blockquote>
+<p>注：使用hexo命令，这里没有建立git的分支，所以不能使用<code>git remote add</code>和<code>git push</code>&gt; </p>
+<blockquote>
+<p>我们使用Typora拖进来的图片需要通过PicGo上传到github图床，由于hexo对站点的保护，</p>
+<p>新建仓库将文件放在ImageUploads仓库下</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/RoyKun1/ImageUploads/master/HexoImage1.jpg" alt=""></p>
+<ul>
+<li>关于在github上修改文件</li>
+</ul>
+<blockquote>
+<p>新建文件夹：点击<code>create new file</code>，输入文件名后 带上<code>/</code>，由于不能为空文件夹，可任意创建一个readme.md文件。</p>
+<p>删除文件或文件夹：不能直接删除，使用：</p>
+<p><code>git clone https://github.com/RoyKun1/ImageUploads.git</code>将仓库克隆到本地</p>
+<p>删除文件或文件夹，使用：</p>
+<p><code>git rm --cached filename</code> 本地又需要使用, 只是不希望这个文件被版本控制</p>
+<p><code>git add *</code></p>
+<p><code>git commit -m &#39;delete folder&#39;</code></p>
+<p><code>git push -u origin master</code></p>
+<p>上传到远程仓库即可</p>
+</blockquote>
+<h2 id="四、自定义博客样式"><a href="#四、自定义博客样式" class="headerlink" title="四、自定义博客样式"></a>四、自定义博客样式</h2><ul>
+<li>使用hexo+<a href="http://theme-next.iissnan.com/getting-started.html" target="_blank" rel="noopener">next</a>自定义博客样式</li>
+<li>可以参考这篇设置<a href="https://www.jianshu.com/p/efbeddc5eb19" target="_blank" rel="noopener">说明</a></li>
+<li>如果你还想添加其他的样式，只需在百度搜索hexo+next，各种大神操作！</li>
+</ul>
 ]]></content>
       <categories>
         <category>Show</category>
