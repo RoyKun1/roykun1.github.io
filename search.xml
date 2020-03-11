@@ -1,6 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Python爬虫系列——Scrapy爬虫实例</title>
+    <url>/2020/03/11/Python%E7%88%AC%E8%99%AB%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94Scrapy%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B/</url>
+    <content><![CDATA[<h1 id="Python爬虫系列——爬取豆瓣电影信息"><a href="#Python爬虫系列——爬取豆瓣电影信息" class="headerlink" title="Python爬虫系列——爬取豆瓣电影信息"></a>Python爬虫系列——爬取<a href="https://movie.douban.com/" target="_blank" rel="noopener">豆瓣电影</a>信息</h1><h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><ul>
+<li>命令行工具：<code>scrapy startproject DoubanBookSpider</code></li>
+<li>一般先在items.py配置数据字段</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DoubanMovieCommentItem</span><span class="params">(scrapy.Item)</span>:</span></span><br><span class="line">    <span class="comment"># define the fields for your item here like:</span></span><br><span class="line">    <span class="comment"># name = scrapy.Field()</span></span><br><span class="line">    title = scrapy.Field()      <span class="comment"># 标题</span></span><br><span class="line">    re_content = scrapy.Field() <span class="comment"># 评论内容</span></span><br><span class="line">    re_time = scrapy.Field()    <span class="comment"># 影评发表时间</span></span><br><span class="line">    re_author = scrapy.Field()  <span class="comment"># 影评作者</span></span><br><span class="line">    re_title = scrapy.Field()   <span class="comment"># 影评标题</span></span><br><span class="line">    <span class="comment"># othername = scrapy.Field()  # 影片别名</span></span><br><span class="line">    <span class="comment"># url = scrapy.Field()        # 电影链接</span></span><br><span class="line">    <span class="comment"># duration = scrapy.Field()   # 视频时长/秒</span></span><br><span class="line">    <span class="comment"># date = scrapy.Field()       # 发行时间</span></span><br><span class="line">    <span class="comment"># director = scrapy.Field()   # 导演</span></span><br><span class="line">    <span class="comment"># actors = scrapy.Field()     # 演员</span></span><br><span class="line">    <span class="comment"># style = scrapy.Field()      # 电影类型</span></span><br><span class="line">    <span class="comment"># area = scrapy.Field()       # 影片地区</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在<code>settings.py</code>中配置相关信息</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">ROBOTSTXT_OBEY = <span class="literal">True</span>   <span class="comment"># 遵守robot.txt</span></span><br><span class="line">DOWNLOADER_MIDDLEWARES = &#123;</span><br><span class="line">    <span class="string">'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware'</span>: <span class="literal">None</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 注：由于一个项目中新建了多个爬虫，运行不同的爬虫在这里 打开具体的ItemPipeline</span></span><br><span class="line">ITEM_PIPELINES = &#123;</span><br><span class="line">   <span class="comment"># 'DoubanBookSpider.pipelines.DoubanbookspiderPipeline': 300,</span></span><br><span class="line">   <span class="comment"># 'DoubanBookSpider.pipelines.DoubanMailPipeline': 600,</span></span><br><span class="line">    <span class="string">'DoubanBookSpider.pipelines.DoubanMovieCommentPipeline'</span>: <span class="number">900</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="数据存储"><a href="#数据存储" class="headerlink" title="数据存储"></a>数据存储</h2><ul>
+<li>前面介绍了数据抓取、数据解析，这也是准备爬虫的最后一步，数据存储</li>
+<li>使用pymysql库操作mysql数据库存储爬下来的数据</li>
+<li>这部分自然是在数据处理部分<code>pipeline.py</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DoubanMovieCommentPipeline</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_item</span><span class="params">(self, item, spider)</span>:</span></span><br><span class="line">        connect = pymysql.connect(user=<span class="string">"root"</span>, password=<span class="string">"root"</span>, port=<span class="number">3306</span>, host=<span class="string">"127.0.0.1"</span>, db=<span class="string">"douban_movie"</span>,</span><br><span class="line">                                  charset=<span class="string">"utf8"</span>)</span><br><span class="line">        con = connect.cursor()</span><br><span class="line">        con.execute(<span class="string">"insert into douban_review(title,re_author,re_title,re_content,re_time) values(%s,%s,%s,%s,%s)"</span>,</span><br><span class="line">                    [item[<span class="string">'title'</span>], item[<span class="string">'re_author'</span>], item[<span class="string">'re_title'</span>], item[<span class="string">'re_content'</span>], item[<span class="string">'re_time'</span>]])</span><br><span class="line">        connect.commit()</span><br><span class="line">        con.close()</span><br><span class="line">        connect.close()</span><br><span class="line">        print(<span class="string">'/////////////////////写入一条//////////////////////'</span>)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>你的电脑需要安装mysql数据库，可以使用Navicat操作</p>
+</blockquote>
+<h2 id="爬取数据"><a href="#爬取数据" class="headerlink" title="爬取数据"></a>爬取数据</h2><ul>
+<li>无需提交登录信息</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="keyword">from</span> DoubanBookSpider.items <span class="keyword">import</span> DoubanMovieCommentItem</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">from</span> scrapy <span class="keyword">import</span> Selector</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DoubanSpider</span><span class="params">(scrapy.Spider)</span>:</span></span><br><span class="line">    name = <span class="string">"doubanmovie"</span></span><br><span class="line">    allowed_domains = [<span class="string">"https://movie.douban.com"</span>]</span><br><span class="line">    start_urls = [<span class="string">'movie.douban.com'</span>]</span><br><span class="line">    list1 = [<span class="string">'教父'</span>, <span class="string">'肖申克的救赎'</span>, <span class="string">'卡萨布兰卡'</span>, <span class="string">'卧虎藏龙'</span>, <span class="string">'天使爱美丽'</span>, <span class="string">'这个杀手不太冷'</span>, <span class="string">'千与千寻'</span>, <span class="string">'窃听风暴'</span>, <span class="string">'阿甘正传'</span>, <span class="string">'霸王别姬'</span>, <span class="string">'大话西游'</span>, <span class="string">'无间道'</span>, <span class="string">'阿凡达'</span>,<span class="string">'画皮'</span>, <span class="string">'让子弹飞'</span>, <span class="string">'唐山大地震'</span>, <span class="string">'金陵十三钗'</span>, <span class="string">'龙门飞甲'</span>, <span class="string">'非诚勿扰'</span>, <span class="string">'盗梦空间'</span>, <span class="string">'建国大业'</span>, <span class="string">'十月围城'</span>, <span class="string">'满城尽带黄金甲'</span>, <span class="string">'速度与激情5'</span>, <span class="string">'集结号'</span>, <span class="string">'画皮'</span>,]</span><br><span class="line">    num = <span class="number">0</span></span><br><span class="line">    header = &#123;<span class="string">'Accept'</span>: <span class="string">'image/webp,image/apng,image/*,*/*;q=0.8'</span>,</span><br><span class="line">              <span class="string">'Accept-Language'</span>: <span class="string">'zh-CN,zh;q=0.9'</span>,</span><br><span class="line">              <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36'</span>,</span><br><span class="line">              <span class="string">'Accept-Encoding'</span>: <span class="string">'gzip, deflate'</span>,</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">start_requests</span><span class="params">(self)</span>:</span>   <span class="comment"># override</span></span><br><span class="line">        url = <span class="string">'https://movie.douban.com/'</span></span><br><span class="line">        <span class="comment"># 遇到模拟表单或Ajax提交post请求的时候使用Request的子类</span></span><br><span class="line">        <span class="keyword">yield</span> scrapy.FormRequest(</span><br><span class="line">            url=url,</span><br><span class="line">            callback=self.parse, headers=self.header, encoding=<span class="string">'utf=8'</span></span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 按照list1数据进行电影内容获取</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> self.list1:</span><br><span class="line">            url = <span class="string">'https://movie.douban.com/j/subject_suggest?q=&#123;0&#125;'</span>.format(i)</span><br><span class="line">            <span class="comment"># 实例化Request对象后，传递url给下载器，得到response</span></span><br><span class="line">            <span class="comment"># 获取某个电影不同版本的所有信息</span></span><br><span class="line">            <span class="keyword">yield</span> scrapy.Request(url, callback=self.link_page, headers=self.header,dont_filter=<span class="literal">True</span>)  <span class="comment"># https://movie.douban.com/subject/26363254/reviews</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 从所有信息中得到电影不同版本的页面链接</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">link_page</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        <span class="comment"># "url":"https:\/\/movie.douban.com\/subject\/1291841\/?suggest=%7B%E6%95%99%E7%88%B6%7D"</span></span><br><span class="line">        u = re.search(<span class="string">'"url":"(.*?)"'</span>, response.text)   <span class="comment"># 匹配上面的注释内容</span></span><br><span class="line">        <span class="keyword">if</span> u <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            url = u.group(<span class="number">1</span>).replace(<span class="string">'\/'</span>, <span class="string">'/'</span>) <span class="comment"># 第一个括号规则中的匹配字符  https:\/\/movie.douban.com\/subject\/1291841\/?suggest=%7B%E6%95%99%E7%88%B6%7D"</span></span><br><span class="line">            id = re.search(<span class="string">'(\d+)'</span>, url)    <span class="comment"># 1291841</span></span><br><span class="line">            meta = &#123;&#125;</span><br><span class="line">            meta[<span class="string">'id'</span>] = id.group(<span class="number">1</span>)    <span class="comment"># 要携带或者传递的信息 字典形式</span></span><br><span class="line">            <span class="keyword">yield</span> scrapy.Request(url, callback=self.parse_page, meta=meta, headers=self.header, dont_filter=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 解析电影介绍页面</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_page</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        <span class="comment"># print(response.url)#https://movie.douban.com/subject/26363254/</span></span><br><span class="line">        id = response.meta[<span class="string">'id'</span>]</span><br><span class="line">        <span class="comment"># 使用css选择器的xpath定位</span></span><br><span class="line">        title = response.xpath(<span class="string">'//*[@id="content"]/h1/span[1]/text()'</span>).extract_first()</span><br><span class="line">        type = response.xpath(<span class="string">'//*[@id="info"]/span[5]/text()'</span>).extract_first()</span><br><span class="line">        <span class="keyword">if</span> type <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            style = type</span><br><span class="line">        <span class="keyword">for</span> node <span class="keyword">in</span> response.xpath(<span class="string">'//*[@id="info"]/span'</span>).extract():</span><br><span class="line">            selector = Selector(text=node)</span><br><span class="line">            des = selector.xpath(<span class="string">'//span'</span>)</span><br><span class="line">            content = des[<span class="number">0</span>].xpath(<span class="string">'normalize-space(string(.))'</span>).extract()[<span class="number">0</span>].replace(<span class="string">'\xa0'</span>, <span class="string">''</span>)</span><br><span class="line">            <span class="keyword">if</span> <span class="string">'导演'</span> <span class="keyword">in</span> content:</span><br><span class="line">                director = content.replace(<span class="string">'导演:'</span>, <span class="string">''</span>)</span><br><span class="line">            <span class="keyword">elif</span> <span class="string">'编剧:'</span> <span class="keyword">in</span> content:</span><br><span class="line">                author = content.replace(<span class="string">'编剧:'</span>, <span class="string">''</span>)</span><br><span class="line">            <span class="keyword">elif</span> <span class="string">'主演:'</span> <span class="keyword">in</span> content:</span><br><span class="line">                actor = content.replace(<span class="string">'主演:'</span>, <span class="string">''</span>)</span><br><span class="line">            <span class="keyword">elif</span> <span class="string">'分钟'</span> <span class="keyword">in</span> content:</span><br><span class="line">                duration = content.replace(<span class="string">'分钟'</span>, <span class="string">''</span>)</span><br><span class="line">            <span class="keyword">elif</span> <span class="string">'制片国家/地区:'</span> <span class="keyword">in</span> content:</span><br><span class="line">                area = content.replace(<span class="string">'制片国家/地区:'</span>, <span class="string">''</span>)</span><br><span class="line">            <span class="keyword">elif</span> <span class="string">'又名:'</span> <span class="keyword">in</span> content:</span><br><span class="line">                an_title = content.replace(<span class="string">'又名:'</span>, <span class="string">''</span>)</span><br><span class="line">            t = re.search(<span class="string">r'(\d&#123;4&#125;-\d&#123;2&#125;-\d&#123;2&#125;)'</span>, content)</span><br><span class="line">            <span class="keyword">if</span> t <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                time = t.group(<span class="number">1</span>)</span><br><span class="line">        <span class="comment"># 到影评页面</span></span><br><span class="line">        re_url = <span class="string">'https://movie.douban.com/subject/'</span> + str(id) + <span class="string">'/reviews'</span></span><br><span class="line">        <span class="comment"># https://movie.douban.com//subject//1291841//reviews</span></span><br><span class="line">        meta = &#123;&#125;</span><br><span class="line">        meta[<span class="string">'review_url'</span>] = re_url</span><br><span class="line">        <span class="keyword">yield</span> scrapy.Request(re_url, callback=self.review_page, meta=meta, headers=self.header,</span><br><span class="line">                             dont_filter=<span class="literal">True</span>)  <span class="comment"># https://movie.douban.com/subject/26363254/reviews</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 总览影评页面，每个影评的详细内容都会跳转到新的影评页面</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">review_page</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        review_url = response.meta[<span class="string">'review_url'</span>]</span><br><span class="line">        meta = &#123;&#125;</span><br><span class="line">        meta[<span class="string">'review_url'</span>] = review_url</span><br><span class="line">        <span class="comment"># 本页所有影评：</span></span><br><span class="line">        <span class="comment"># 用正则表达式匹配所有为数字的id选择器 ：[re:match(@id, "\d+")]</span></span><br><span class="line">        <span class="comment"># 或者：//*[@id="content"]/div/div[1]/div[1]/div</span></span><br><span class="line">        resultList = response.xpath(<span class="string">r'//*[re:match(@id, "\d+")]'</span>,)</span><br><span class="line">        <span class="comment"># print('resultList: ',resultList)</span></span><br><span class="line">        <span class="keyword">for</span> res <span class="keyword">in</span> resultList:</span><br><span class="line">            self.num = self.num + <span class="number">1</span></span><br><span class="line">            author = res.xpath(<span class="string">'./header/a[2]/text()'</span>).extract_first()</span><br><span class="line">            <span class="keyword">if</span> author:</span><br><span class="line">                <span class="comment"># pubdate=res.xpath('./header/span[2]/text()').extract_first()</span></span><br><span class="line">                url = res.xpath(<span class="string">'./div/h2/a/@href'</span>).extract_first() <span class="comment">#  某个具体影评页面</span></span><br><span class="line">                <span class="comment"># title=res.xpath('./div/h2/a/text()').extract_first()</span></span><br><span class="line">                <span class="comment"># 对某个具体影评进行解析</span></span><br><span class="line">                <span class="keyword">yield</span> scrapy.Request(url, callback=self.review_parse, headers=self.header, dont_filter=<span class="literal">True</span>)</span><br><span class="line">        <span class="comment"># //*[@id="content"]/div/div[1]/div[2]/span[4]</span></span><br><span class="line">        <span class="comment"># 后页影评</span></span><br><span class="line">        next_link = response.xpath(<span class="string">'//*[@id="content"]/div/div[1]/div[2]/span[4]/a/@href'</span>).extract_first()</span><br><span class="line">        <span class="comment"># 页数：2 3 4...</span></span><br><span class="line">        next_page = response.xpath(<span class="string">'//*[@id="content"]/div/div[1]/div[2]/span[4]/a/text()'</span>).extract_first()</span><br><span class="line">        <span class="comment"># 后页即下一页，找到最后一页进行翻页</span></span><br><span class="line">        <span class="keyword">if</span> next_page == <span class="string">'后页&gt;'</span> <span class="keyword">and</span> self.num &lt;= <span class="number">40</span>:</span><br><span class="line">            next_url = review_url + next_link</span><br><span class="line">            <span class="comment"># print(next_url)</span></span><br><span class="line">            print(<span class="string">'====================爬取下一页=========================='</span>)</span><br><span class="line">            time.sleep(<span class="number">30</span>)</span><br><span class="line">            <span class="keyword">yield</span> scrapy.Request(next_url, callback=self.review_page, meta=meta, headers=self.header, dont_filter=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 解析具体影评页面</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">review_parse</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        item = DoubanMovieCommentItem()</span><br><span class="line">        title = response.xpath(<span class="string">'//*[@id="content"]/div/div[1]/h1/span/text()'</span>).extract_first()</span><br><span class="line">        <span class="keyword">if</span> title:</span><br><span class="line">            item[<span class="string">'re_title'</span>] = title</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            item[<span class="string">'re_title'</span>] = <span class="string">' '</span></span><br><span class="line">        des = response.xpath(<span class="string">'//*[@id="link-report"]/div[1]'</span>)</span><br><span class="line">        content = des[<span class="number">0</span>].xpath(<span class="string">'normalize-space(string(.))'</span>).extract()[<span class="number">0</span>].replace(<span class="string">'\xa0'</span>, <span class="string">''</span>)</span><br><span class="line">        <span class="keyword">if</span> content:</span><br><span class="line">            item[<span class="string">'re_content'</span>] = content</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            item[<span class="string">'re_content'</span>] = <span class="string">' '</span></span><br><span class="line">        print(title)</span><br><span class="line">        resultList = response.xpath(<span class="string">r'//*[re:match(@id, "\d+")]'</span>, )</span><br><span class="line">        <span class="keyword">for</span> res <span class="keyword">in</span> resultList:</span><br><span class="line">            author = res.xpath(<span class="string">'./header/a[1]/span/text()'</span>).extract_first()</span><br><span class="line">            <span class="keyword">if</span> author:</span><br><span class="line">                dianying_name = res.xpath(<span class="string">'./header/a[2]/text()'</span>).extract_first()</span><br><span class="line">                pubdate = res.xpath(<span class="string">'./header/span[3]/text()'</span>).extract_first()</span><br><span class="line">                item[<span class="string">'re_author'</span>] = author</span><br><span class="line">                <span class="keyword">if</span> dianying_name:</span><br><span class="line">                    item[<span class="string">'title'</span>] = dianying_name</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    item[<span class="string">'title'</span>] = <span class="string">' '</span></span><br><span class="line">                <span class="keyword">if</span> pubdate:</span><br><span class="line">                    item[<span class="string">'re_time'</span>] = pubdate</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    item[<span class="string">'re_time'</span>] = <span class="string">' '</span></span><br><span class="line">        <span class="keyword">yield</span> item</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>执行命令：<code>scrapy crawl doubanmovie</code>，即可开始爬取</p>
+</blockquote>
+<h2 id="登录爬取影评"><a href="#登录爬取影评" class="headerlink" title="登录爬取影评"></a>登录爬取影评</h2><ul>
+<li>需要提交登录信息的表单，一般使用post提交，可以在开发者工具中的network查看 From-Data</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="keyword">from</span> faker <span class="keyword">import</span> Factory</span><br><span class="line"><span class="keyword">from</span> DoubanBookSpider.items <span class="keyword">import</span> DoubanMovieCommentItem</span><br><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> parse</span><br><span class="line">f = Factory.create()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MailSpider</span><span class="params">(scrapy.Spider)</span>:</span></span><br><span class="line">    name = <span class="string">'douban-comment'</span></span><br><span class="line">    allowed_domains = [<span class="string">'accounts.douban.com'</span>, <span class="string">'douban.com'</span>]</span><br><span class="line">    start_urls = [</span><br><span class="line">        <span class="string">'https://www.douban.com/'</span></span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">'Accept'</span>: <span class="string">'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'</span>,</span><br><span class="line">        <span class="string">'Accept-Encoding'</span>: <span class="string">'gzip, deflate, br'</span>,</span><br><span class="line">        <span class="string">'Accept-Language'</span>: <span class="string">'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'</span>,</span><br><span class="line">        <span class="string">'Connection'</span>: <span class="string">'keep-alive'</span>,</span><br><span class="line">        <span class="string">'Host'</span>: <span class="string">'accounts.douban.com'</span>,</span><br><span class="line">        <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36'</span><span class="comment"># f.user_agent()    # 搞个假的</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 登录提交的表单</span></span><br><span class="line">    formdata = &#123;</span><br><span class="line">        <span class="string">'form_email'</span>: <span class="string">'szsplyr@163.com'</span>,</span><br><span class="line">        <span class="string">'form_password'</span>: <span class="string">'******'</span>,</span><br><span class="line">        <span class="comment"># 'captcha-solution': '',</span></span><br><span class="line">        <span class="comment"># 'captcha-id': '',</span></span><br><span class="line">        <span class="string">'login'</span>: <span class="string">'登录'</span>,</span><br><span class="line">        <span class="string">'redir'</span>: <span class="string">'https://www.douban.com/'</span>,</span><br><span class="line">        <span class="string">'source'</span>: <span class="string">'None'</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">start_requests</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> [scrapy.Request(url=<span class="string">'https://www.douban.com/accounts/login'</span>,</span><br><span class="line">                               headers=self.headers,</span><br><span class="line">                               meta=&#123;<span class="string">'cookiejar'</span>: <span class="number">1</span>&#125;,</span><br><span class="line">                               callback=self.parse_login)]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_login</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        <span class="comment"># 如果有验证码要人为处理</span></span><br><span class="line">        <span class="keyword">if</span> response.body==<span class="literal">None</span>: <span class="comment"># 'captcha_image' in response.body</span></span><br><span class="line">            print(<span class="string">'Copy the link:'</span>)</span><br><span class="line">            link = response.xpath(<span class="string">'//img[@class="captcha_image"]/@src'</span>).extract()[<span class="number">0</span>]</span><br><span class="line">            print(<span class="string">'captcha link: '</span>,link)</span><br><span class="line">            captcha_solution = input(<span class="string">'captcha-solution:'</span>)</span><br><span class="line">            <span class="comment"># 验证码ID</span></span><br><span class="line">            captcha_id = parse.urlparse(link, <span class="literal">True</span>)[<span class="string">'id'</span>]</span><br><span class="line">            self.formdata[<span class="string">'captcha-solution'</span>] = captcha_solution</span><br><span class="line">            self.formdata[<span class="string">'captcha-id'</span>] = captcha_id</span><br><span class="line">        <span class="comment"># 登录的完整表单信息</span></span><br><span class="line">        <span class="keyword">return</span> [scrapy.FormRequest.from_response(response,</span><br><span class="line">                                                 formdata=self.formdata,</span><br><span class="line">                                                 headers=self.headers,</span><br><span class="line">                                                 meta=&#123;<span class="string">'cookiejar'</span>: response.meta[<span class="string">'cookiejar'</span>]&#125;,</span><br><span class="line">                                                 callback=self.after_login</span><br><span class="line">                                                 )]</span><br><span class="line">    <span class="comment"># 解析页面</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">after_login</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        print(response.status)</span><br><span class="line">        self.headers[<span class="string">'Host'</span>] = <span class="string">"www.douban.com"</span></span><br><span class="line">        <span class="keyword">yield</span> scrapy.Request(url=<span class="string">'https://movie.douban.com/subject/22266320/reviews'</span>,</span><br><span class="line">                              meta=&#123;<span class="string">'cookiejar'</span>: response.meta[<span class="string">'cookiejar'</span>]&#125;,</span><br><span class="line">                              headers=self.headers,</span><br><span class="line">                              callback=self.parse_comment_url)</span><br><span class="line">        <span class="keyword">yield</span> scrapy.Request(url=<span class="string">'https://movie.douban.com/subject/22266320/reviews'</span>,</span><br><span class="line">                              meta=&#123;<span class="string">'cookiejar'</span>: response.meta[<span class="string">'cookiejar'</span>]&#125;,</span><br><span class="line">                              headers=self.headers,</span><br><span class="line">                              callback=self.parse_next_page,</span><br><span class="line">                              dont_filter = <span class="literal">True</span>)   <span class="comment">#不去重</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 爬取下一页影评</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_next_page</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        print(response.status)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 不是完整的url，需要拼接</span></span><br><span class="line">            next_url = response.urljoin(response.xpath(<span class="string">'//span[@class="next"]/a/@href'</span>).extract()[<span class="number">0</span>])</span><br><span class="line">            print(<span class="string">"下一页"</span>)</span><br><span class="line">            print(next_url)</span><br><span class="line">            <span class="keyword">yield</span> scrapy.Request(url=next_url,</span><br><span class="line">                              meta=&#123;<span class="string">'cookiejar'</span>: response.meta[<span class="string">'cookiejar'</span>]&#125;,</span><br><span class="line">                              headers=self.headers,</span><br><span class="line">                              callback=self.parse_comment_url,</span><br><span class="line">                              dont_filter = <span class="literal">True</span>)</span><br><span class="line">            <span class="keyword">yield</span> scrapy.Request(url=next_url,</span><br><span class="line">                              meta=&#123;<span class="string">'cookiejar'</span>: response.meta[<span class="string">'cookiejar'</span>]&#125;,</span><br><span class="line">                              headers=self.headers,</span><br><span class="line">                              callback=self.parse_next_page,</span><br><span class="line">                              dont_filter = <span class="literal">True</span>)</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            print(<span class="string">"Next page Error"</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 可以使用for循环配合yield将上面两个函数写在一起，这样写是为了容易理解</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 处理一个页面的信息</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_comment_url</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        print(response.status)</span><br><span class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> response.xpath(<span class="string">'//div[@class="main review-item"]'</span>):</span><br><span class="line">            comment_url = item.xpath(<span class="string">'header/h3[@class="title"]/a/@href'</span>).extract()[<span class="number">0</span>]</span><br><span class="line">            comment_title = item.xpath(<span class="string">'header/h3[@class="title"]/a/text()'</span>).extract()[<span class="number">0</span>]</span><br><span class="line">            print(comment_title)</span><br><span class="line">            print(comment_url)</span><br><span class="line">            <span class="keyword">yield</span> scrapy.Request(url=comment_url,</span><br><span class="line">                              meta=&#123;<span class="string">'cookiejar'</span>: response.meta[<span class="string">'cookiejar'</span>]&#125;,</span><br><span class="line">                              headers=self.headers,</span><br><span class="line">                              callback=self.parse_comment)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 对得到的数据处理</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_comment</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        print(response.status)</span><br><span class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> response.xpath(<span class="string">'//div[@id="content"]'</span>):</span><br><span class="line">            comment = DoubanMovieCommentItem()</span><br><span class="line">            comment[<span class="string">'useful_num'</span>] = item.xpath(<span class="string">'//div[@class="main-panel-useful"]/button[1]/text()'</span>).extract()[<span class="number">0</span>].strip()</span><br><span class="line">            comment[<span class="string">'no_help_num'</span>] = item.xpath(<span class="string">'//div[@class="main-panel-useful"]/button[2]/text()'</span>).extract()[<span class="number">0</span>].strip()</span><br><span class="line">            comment[<span class="string">'people'</span>] = item.xpath(<span class="string">'//span[@property="v:reviewer"]/text()'</span>).extract()[<span class="number">0</span>]</span><br><span class="line">            comment[<span class="string">'people_url'</span>] = item.xpath(<span class="string">'//header[@class="main-hd"]/a[1]/@href'</span>).extract()[<span class="number">0</span>]</span><br><span class="line">            comment[<span class="string">'star'</span>] = item.xpath(<span class="string">'//header[@class="main-hd"]/span[1]/@title'</span>).extract()[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">            data_type = item.xpath(<span class="string">'//div[@id="link-report"]/div/@data-original'</span>).extract()[<span class="number">0</span>]</span><br><span class="line">            print(<span class="string">"data_type: "</span>+data_type)</span><br><span class="line">            <span class="keyword">if</span> data_type == <span class="string">'0'</span>:</span><br><span class="line">                comment[<span class="string">'comment'</span>] = <span class="string">"\t#####\t"</span>.join(map(<span class="keyword">lambda</span> x:x.strip(), item.xpath(<span class="string">'//div[@id="link-report"]/div/p/text()'</span>).extract()))</span><br><span class="line">            <span class="keyword">elif</span> data_type == <span class="string">'1'</span>:</span><br><span class="line">                comment[<span class="string">'comment'</span>] = <span class="string">"\t#####\t"</span>.join(map(<span class="keyword">lambda</span> x:x.strip(), item.xpath(<span class="string">'//div[@id="link-report"]/div[1]/text()'</span>).extract()))</span><br><span class="line">            comment[<span class="string">'title'</span>] = item.xpath(<span class="string">'//span[@property="v:summary"]/text()'</span>).extract()[<span class="number">0</span>]</span><br><span class="line">            comment[<span class="string">'comment_page_url'</span>] = response.url</span><br><span class="line">            <span class="keyword">yield</span> comment</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
+<p>​        如今数据爬取难度持续增大，技术要求也越来越高，今天看到的实例可能过几天就失效了。很多网站需要使用JavaScript逆向，由于APP也是数据的重要载体，App的逆向也几乎已经是爬虫必备的技能……当然这也不完全是坏事，这让企业对爬虫工程师的需求量在逐步增多，薪资待遇也提升了不少。这里只是“照猫画虎”的介绍了爬虫的基本使用知识，如果你有志做个爬虫“黑客”，需要投入更多的经历，可以从<a href="https://qiniu.cuiqingcai.com/" target="_blank" rel="noopener">这里</a>开始，一步步进阶 ！</p>
+<p>​        同时，爬虫本身也是在打法律的擦边球，对于数据获取应该注重隐私，有法律意识！</p>
+</blockquote>
+<blockquote>
+<p>​        如果你只是有一些爬取数据的需求，可以使用<a href="https://www.bazhuayu.com/" target="_blank" rel="noopener">八爪鱼</a>数据采集器，可以尝试使用Python的jieba分词和pandas模块实现数统计。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>技能</category>
+      </categories>
+      <tags>
+        <tag>爬虫</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>海上归来</title>
     <url>/2020/03/09/%E6%B5%B7%E4%B8%8A%E5%BD%92%E6%9D%A5/</url>
     <content><![CDATA[<h1 id="PS基础案例——海上归来"><a href="#PS基础案例——海上归来" class="headerlink" title="PS基础案例——海上归来"></a>PS基础案例——海上归来</h1><h2 id="案例展示"><a href="#案例展示" class="headerlink" title="案例展示"></a>案例展示</h2><p>素材<a href="https://pan.baidu.com/s/12FUpUjc2cwqHCmGNLwbNyw" target="_blank" rel="noopener">链接</a></p>
@@ -1775,6 +1827,735 @@
       </categories>
       <tags>
         <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python爬虫系列——爬虫基础</title>
+    <url>/2019/02/19/Python%E7%88%AC%E8%99%AB%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94%E7%88%AC%E8%99%AB%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<h1 id="Python爬虫系列——数据请求"><a href="#Python爬虫系列——数据请求" class="headerlink" title="Python爬虫系列——数据请求"></a>Python爬虫系列——数据请求</h1><p>​        爬虫是一种按照一定的规则，自动的抓取网页信息的程序或者脚本，这样的程序可以用很多语言实现，但是人生苦短大家都用python，所以你要有python基础知识（跟着我的博文走一遍就好啦）。</p>
+<p>​        Python爬虫的方式有多种，从使用爬虫框架<strong>获取数据</strong>到<strong>解析提取</strong>，再到<strong>数据存储</strong>，各阶段都有不同的手段和类库支持。虽然不能一概而论哪种方式一定更好，毕竟不同案例需求和不同应用场景会综合决定采取哪种方式，但对比之下还是会有很大差距。</p>
+<h2 id="Selenium"><a href="#Selenium" class="headerlink" title="Selenium"></a>Selenium</h2><ul>
+<li><p>Selenium是一个用于Web应用程序测试的工具，但是处理一些小爬虫很方便</p>
+</li>
+<li><p>关键命令</p>
+<ol>
+<li><p>find_element(s)_by_tag_name</p>
+</li>
+<li><p>find_element(s)_by_css_selector</p>
+</li>
+</ol>
+</li>
+<li><p>案例说明——爬取商城商品信息</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">browser = webdriver.Chrome()</span><br><span class="line">browser.set_page_load_timeout(<span class="number">30</span>)</span><br><span class="line">browser.get(<span class="string">'http://www.17huo.com/search.html?sq=2&amp;keyword=%E7%BE%8A%E6%AF%9B'</span>)</span><br><span class="line">page_info = browser.find_element_by_css_selector(<span class="string">'body &gt; div.wrap &gt; div.pagem.product_list_pager &gt; div'</span>)</span><br><span class="line"><span class="comment"># print(page_info.text)</span></span><br><span class="line">pages = int((page_info.text.split(<span class="string">'，'</span>)[<span class="number">0</span>]).split(<span class="string">' '</span>)[<span class="number">1</span>])</span><br><span class="line"><span class="keyword">for</span> page <span class="keyword">in</span> range(pages):</span><br><span class="line">    <span class="keyword">if</span> page &gt; <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    url = <span class="string">'http://www.17huo.com/?mod=search&amp;sq=2&amp;keyword=%E7%BE%8A%E6%AF%9B&amp;page='</span> + str(page + <span class="number">1</span>)</span><br><span class="line">    browser.get(url)</span><br><span class="line">    browser.execute_script(<span class="string">"window.scrollTo(0, document.body.scrollHeight);"</span>)<span class="comment"># 屏幕滚动，不然会load不完整</span></span><br><span class="line">    time.sleep(<span class="number">3</span>)</span><br><span class="line">    <span class="comment"># body &gt; div.wrap &gt; div:nth-child(2) &gt; div.p_main &gt; ul</span></span><br><span class="line">    goods = browser.find_element_by_css_selector(<span class="string">'body &gt; div.wrap &gt; div:nth-child(2) &gt; div.p_main &gt; ul'</span>).find_elements_by_tag_name(<span class="string">'li'</span>)</span><br><span class="line">    print(<span class="string">'%d页有%d件商品'</span> % ((page + <span class="number">1</span>), len(goods)))</span><br><span class="line">    <span class="keyword">for</span> good <span class="keyword">in</span> goods:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            title = good.find_element_by_css_selector(<span class="string">'a:nth-child(1) &gt; p:nth-child(2)'</span>).text</span><br><span class="line">            price = good.find_element_by_css_selector(<span class="string">'div &gt; a &gt; span'</span>).text</span><br><span class="line">            print(title, price)</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            print(good.text)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如图，获取商品页面信息</p>
+<p><img src="https://raw.githubusercontent.com/RoyKun1/ImageUploads/master/Python/pages.png" alt=""></p>
+</li>
+<li><p>使用谷歌浏览器，在页面元素处右键<strong>检查</strong>可以查看页面代码，使用<code>Copy selector</code>得到定位信息传入方法，如图所示</p>
+<p><img src="https://raw.githubusercontent.com/RoyKun1/ImageUploads/master/Python/info.png" alt=""></p>
+<p>注：定位信息的获取只需观察HTML标签的所属关系即可发现规律</p>
+</li>
+<li><p>使用webdriver接口需要安装<a href="https://blog.csdn.net/weixin_44545954/article/details/86690861" target="_blank" rel="noopener">驱动</a></p>
+<p>注：一般情况下需要将下载的驱动放在自定义目录下并加入系统环境变量，但我试了不行，于是放在谷歌浏览器启动目录下，也不行！最后放在python.exe目录下，成了！</p>
+</li>
+</ul>
+<h2 id="requests"><a href="#requests" class="headerlink" title="requests"></a>requests</h2><ul>
+<li><p>毫无疑问这是最常用的爬虫库了，极大简化了操作，一切动力都来自于根植在 requests 内部的 urllib3，来个小demo：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">print(dir(requests))	<span class="comment"># 查看包含的方法</span></span><br><span class="line"></span><br><span class="line">url = <span class="string">'http://www.baidu.com'</span></span><br><span class="line">r = requests.get(url)</span><br><span class="line">print(r.text)</span><br><span class="line">print(r.status_code)</span><br><span class="line">print(r.encoding)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>传递参数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">params = &#123;<span class="string">'k1'</span>:<span class="string">'v1'</span>, <span class="string">'k2'</span>:<span class="string">'v2'</span>&#125;</span><br><span class="line">r = requests.get(<span class="string">'http://httpbin.org/get'</span>, params)</span><br><span class="line">print(r.url)	<span class="comment"># http://httpbin.org/get?k1=v1&amp;k2=v2</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>二进制数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 下载图片并保存</span></span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">from</span> io <span class="keyword">import</span> BytesIO</span><br><span class="line">r = requests.get(<span class="string">'http://i-2.shouji56.com/2015/2/11/23dab5c5-336d-4686-9713-ec44d21958e3.jpg'</span>)</span><br><span class="line">image = Image.open(BytesIO(r.content))</span><br><span class="line">image.save(<span class="string">'download/meinv.jpg'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>json处理</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">r = requests.get(<span class="string">'https://github.com/timeline.json'</span>)</span><br><span class="line">print(type(r.json))</span><br><span class="line">print(r.text)	<span class="comment"># 返回字符串</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>原始数据</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">r = requests.get(<span class="string">'http://i-2.shouji56.com/2015/2/11/23dab5c5-336d-4686-9713-ec44d21958e3.jpg'</span>, stream = <span class="literal">True</span>)</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'download/meinv2.jpg'</span>, <span class="string">'wb+'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> chunk <span class="keyword">in</span> r.iter_content(<span class="number">1024</span>): <span class="comment"># 将二进制数据分批写入</span></span><br><span class="line">        f.write(chunk)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>处理表单</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line">form = &#123;<span class="string">'username'</span>:<span class="string">'user'</span>, <span class="string">'password'</span>:<span class="string">'pass'</span>&#125;</span><br><span class="line">r = requests.post(<span class="string">'http://httpbin.org/post'</span>, data = form)   <span class="comment"># 信息保存在form</span></span><br><span class="line">print(r.text)</span><br><span class="line">r = requests.post(<span class="string">'http://httpbin.org/post'</span>, data = json.dumps(form))   <span class="comment"># 信息保存在json</span></span><br><span class="line">print(r.text)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>cookie</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># HTTP协议本身是无状态的。什么是无状态呢，即服务器无法判断用户身份。Cookie实际上是一小段的文本信息（key-value格式）。客户端向服务器发起请求，如果服务器需要记录该用户状态，就使用response向客户端浏览器颁发一个Cookie。客户端浏览器会把Cookie保存起来。当浏览器再请求该网站时，浏览器把请求的网址连同该Cookie一同提交给服务器。服务器检查该Cookie，以此来辨认用户状态</span></span><br><span class="line"></span><br><span class="line">url = <span class="string">'http://www.baidu.com'</span></span><br><span class="line">r = requests.get(url)</span><br><span class="line">cookies = r.cookies</span><br><span class="line"><span class="keyword">for</span> k, v <span class="keyword">in</span> cookies.get_dict().items():</span><br><span class="line">    print(k, v) <span class="comment"># BDORZ 27315</span></span><br><span class="line">    </span><br><span class="line"><span class="comment"># 访问网站可以带上我们的cookie，可以不再重新登录</span></span><br><span class="line">cookies = &#123;<span class="string">'c1'</span>:<span class="string">'v1'</span>, <span class="string">'c2'</span>: <span class="string">'v2'</span>&#125;</span><br><span class="line">r = requests.get(<span class="string">'http://httpbin.org/cookies'</span>, cookies = cookies)</span><br><span class="line">print(r.text)	<span class="comment"># 这是一个测试http请求的网站</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重定向</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 有些网站会跳转，可以查看记录</span></span><br><span class="line">r = requests.head(<span class="string">'http://github.com'</span>, allow_redirects = <span class="literal">True</span>)</span><br><span class="line">print(r.url)    <span class="comment"># https://github.com/</span></span><br><span class="line">print(r.status_code)</span><br><span class="line">print(r.history)    <span class="comment"># 查看重定向历史</span></span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<h2 id="实例——爬取豆瓣信息"><a href="#实例——爬取豆瓣信息" class="headerlink" title="实例——爬取豆瓣信息"></a>实例——爬取豆瓣信息</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">headers = &#123;<span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36'</span>&#125;</span><br><span class="line">cookies = &#123;<span class="string">'cookie'</span>: <span class="string">'KADUSERCOOKIE=3DB9575C-6B2B-4264-9050-ADA70EE038F8; KRTBCOOKIE_218=4056-XktWHAAAAwI6Oqx_&amp;KRTB&amp;22922-XktWHAAAAwI6Oqx_&amp;KRTB&amp;22978-XktWHAAAAwI6Oqx_&amp;KRTB&amp;23194-XktWHAAAAwI6Oqx_; PugT=1583546177; PUBMDCID=4'</span>&#125;</span><br><span class="line">url = <span class="string">'http://www.douban.com'</span></span><br><span class="line">r = requests.get(url, cookies = cookies, headers = headers)</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'download/douban_2.txt'</span>, <span class="string">'wb+'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(r.content)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>上面是使用登录后的cookie爬取页面信息，cookie可以在浏览器的开发者工具<strong>Network</strong>中找到</li>
+<li>也可以使用用户名密码登录，但是可能需要输入验证码，比较繁琐</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> html5lib</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"></span><br><span class="line">s = requests.Session()</span><br><span class="line">url_login = <span class="string">'https://accounts.douban.com/passport/login'</span>  <span class="comment"># 豆瓣登录页面</span></span><br><span class="line"></span><br><span class="line">formdata = &#123;</span><br><span class="line">    <span class="string">'redir'</span>:<span class="string">'https://www.douban.com'</span>,</span><br><span class="line">    <span class="string">'form_email'</span>: <span class="string">'szsplyr@163.com'</span>,</span><br><span class="line">    <span class="string">'form_password'</span>: <span class="string">'******'</span>,<span class="comment"># 输入你的密码</span></span><br><span class="line">    <span class="string">'login'</span>: <span class="string">u'登陆'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 请求头信息</span></span><br><span class="line">headers = &#123;<span class="string">'user-agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36'</span>&#125;</span><br><span class="line"><span class="comment"># 提交表单信息</span></span><br><span class="line">r = s.post(url_login, data = formdata, headers = headers)</span><br><span class="line">content = r.text    <span class="comment"># 使用request抓取信息</span></span><br><span class="line">soup = BeautifulSoup(content, <span class="string">'html5lib'</span>)   <span class="comment"># 使用bs4解析信息</span></span><br><span class="line">captcha = soup.find(<span class="string">'img'</span>, id = <span class="string">'captcha_image'</span>)</span><br><span class="line"><span class="keyword">if</span> captcha: <span class="comment"># 如果有验证码</span></span><br><span class="line">    captcha_url = captcha[<span class="string">'src'</span>]</span><br><span class="line">    re_captcha_id = <span class="string">r'&lt;input type="hidden" name="captcha-id" value="(.*?)"/'</span></span><br><span class="line">    captcha_id = re.findall(re_captcha_id, content)</span><br><span class="line">    print(captcha_id)</span><br><span class="line">    print(captcha_url)</span><br><span class="line">    captcha_text = input(<span class="string">'Please input the captcha:'</span>)</span><br><span class="line">    formdata[<span class="string">'captcha-solution'</span>] = captcha_text</span><br><span class="line">    formdata[<span class="string">'captcha-id'</span>] = captcha_id</span><br><span class="line">    r = s.post(url_login, data = formdata, headers = headers)</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'download/contacts.txt'</span>, <span class="string">'w+'</span>, encoding = <span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(r.text)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Scrapy"><a href="#Scrapy" class="headerlink" title="Scrapy"></a>Scrapy</h2><ul>
+<li><p>对于简易的项目可以使用上面的方式结合数据解析爬取，但是从数据的请求到存储是一个比较复杂的过程，如果项目需求较大，一步步操作效率很低，所以推荐使用scrapy爬虫框架</p>
+</li>
+<li><p>框架的整个流程如图所示：官网<a href="https://doc.scrapy.org/en/master/topics/architecture.html" target="_blank" rel="noopener">链接</a></p>
+<p><img src="https://raw.githubusercontent.com/RoyKun1/ImageUploads/master/Python/scrapy1.png" alt=""></p>
+</li>
+<li><p>主要结构包括</p>
+<ol>
+<li>引擎(Scrapy Engine)     【心脏】</li>
+</ol>
+<blockquote>
+<p>负责Spider、ItemPipeline、Downloader、Scheduler中间的通讯，信号、数据传递等</p>
+</blockquote>
+<ol start="2">
+<li>调度器(Scheduler)  【脑袋】</li>
+</ol>
+<blockquote>
+<p>负责接受引擎发送过来的Request请求，并按照一定的方式进行整理排列，入队，当引擎需要时，交还给引擎。</p>
+</blockquote>
+<ol start="3">
+<li>下载器(Downloader) </li>
+</ol>
+<blockquote>
+<p>负责下载Scrapy Engine(引擎)发送的所有Requests请求，并将其获取到的Responses交还给Scrapy Engine(引擎)，由引擎交给Spider来处理</p>
+</blockquote>
+<ol start="4">
+<li>蜘蛛(Spiders)    【胃…】</li>
+</ol>
+<blockquote>
+<p>负责处理所有Responses，使用xpath解析页面内容，并将需要跟进的URL提交给引擎，再次进入Scheduler(调度器)，并生成解析后的结果Item。 </p>
+<p>最后返回的这些Item通常会被持久化到数据库中(使用Item Pipeline)或者使用Feed exports将其保存到文件中。</p>
+</blockquote>
+<ol start="5">
+<li>项目管道(Item Pipeline)  </li>
+</ol>
+<blockquote>
+<p>负责处理Spider中获取到的Item，并进行进行后期处理（详细分析、过滤、存储等）的地方</p>
+</blockquote>
+<ol start="6">
+<li>下载器中间件(Downloader Middlewares</li>
+</ol>
+<blockquote>
+<p>可以自定义扩展下载功能的组件</p>
+</blockquote>
+<ol start="7">
+<li>蜘蛛中间件(Spider Middlewares) </li>
+</ol>
+<blockquote>
+<p>可以自定义扩展的功能组件比如进入Spider的Responses;和从Spider出去的Requests</p>
+</blockquote>
+<ol start="8">
+<li>调度中间件(Scheduler Middlewares)</li>
+</ol>
+</li>
+<li><p>使用scrapy爬取单个页面：</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">houseSpider</span><span class="params">(scrapy.Spider)</span>:</span></span><br><span class="line">    name = <span class="string">"House"</span></span><br><span class="line">    start_urls = [<span class="string">'https://hangzhou.anjuke.com/sale/'</span>]</span><br><span class="line">    <span class="comment"># 同样，使用开发者工具中的Copy xpath得到节点信息传递给xpath解析</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self,response)</span>:</span>   <span class="comment"># 爬虫获取到的信息</span></span><br><span class="line">        <span class="keyword">for</span> houseInfo <span class="keyword">in</span> response.xpath(<span class="string">'//*[@id="houselist-mod-new"]/li/'</span>):</span><br><span class="line">            print(houseInfo.xpath(<span class="string">'div[2]/div[1]/a/text()'</span>).extract_first())</span><br><span class="line">            print(houseInfo.xpath(<span class="string">'div[2]/div[2]/span[1]/text()'</span> + 		<span class="string">'div[2]/div[2]/span[2]/text()'</span> + <span class="string">'div[2]/div[2]/span[3]/text()'</span> + <span class="string">'div[2]/div[2]/span[4]/text()'</span>).extract_first())</span><br><span class="line">            print(houseInfo.xpath(<span class="string">'div[2]/div[3]/span/text()'</span>).extract_first())  <span class="comment"># text()表示提取文本</span></span><br><span class="line">            <span class="keyword">yield</span> &#123;     <span class="comment"># 生成器，可迭代</span></span><br><span class="line">                <span class="string">'title'</span>: houseInfo.xpath(<span class="string">'div[2]/div[1]/a/text()'</span>).extract_first(),</span><br><span class="line">                <span class="string">'desc'</span>: houseInfo.xpath(<span class="string">'div[2]/div[2]/span[1]/text()'</span>+ <span class="string">'div[2]/div[2]/span[2]/text()'</span> + <span class="string">'div[2]/div[2]/span[3]/text()'</span>+  <span class="string">'div[2]/div[2]/span[4]/text()'</span>).extract_first(),</span><br><span class="line">                <span class="string">'path'</span>: houseInfo.xpath(<span class="string">'div[2]/div[3]/span/text()'</span>).extract_first()</span><br><span class="line">            &#125;   <span class="comment"># 可以用不同的格式将返回的字典信息保存</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在pycharm的terminal中使用命令：<code>scrapy runspider scrapyDemo.py -o houseInfo.csv</code></li>
+<li>爬取上面的页面你会发现怎么都得不到数据，原因是：</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/RoyKun1/ImageUploads/master/Python/outmind.png" alt=""></p>
+<blockquote>
+<p>感受到了对小白满满的恶意！没事，先投降，以后再搞他 ……</p>
+<p>注：在获取xpath表达式的时候一定要用分块分割的思想，获取内容时要展开到最底层使用对应的方法，熟悉常见的xpath表达式符号的意义：<code>//</code> <code>/</code> <code>@</code> <code>[表达式]</code> <code>text()</code> <code>position()</code> <code>last()</code></p>
+</blockquote>
+<ul>
+<li>使用scrapy爬取多张页面：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">tagSpider</span><span class="params">(scrapy.Spider)</span>:</span></span><br><span class="line">    name = <span class="string">'Tag'</span></span><br><span class="line">    start_urls = [<span class="string">'http://quotes.toscrape.com/tag/humor/'</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self,response)</span>:</span>   <span class="comment"># 爬虫获取到的信息</span></span><br><span class="line">        <span class="keyword">for</span> tagInfo <span class="keyword">in</span> response.xpath(<span class="string">'/html/body/div/div[2]/div[1]/div'</span>):</span><br><span class="line">            print(tagInfo.xpath(<span class="string">'span[1]/text()'</span>).extract_first())</span><br><span class="line">            print(tagInfo.xpath(<span class="string">'span[2]/small/text()'</span>).extract_first())</span><br><span class="line">            print(tagInfo.xpath(<span class="string">'div/a[1]/text()'</span>).extract_first()) </span><br><span class="line">            <span class="keyword">yield</span> &#123;</span><br><span class="line">                <span class="string">'Info'</span>: tagInfo.xpath(<span class="string">'span[1]/text()'</span>).extract_first(),</span><br><span class="line">                <span class="string">'author'</span>: tagInfo.xpath(<span class="string">'span[2]/small/text()'</span>).extract_first(),</span><br><span class="line">                <span class="string">'tag'</span>: tagInfo.xpath(<span class="string">'div/a[1]/text()'</span>).extract_first()</span><br><span class="line">            &#125;   <span class="comment"># 可以用不同的格式将返回的字典信息保存</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 获取下一页路径信息，回调解析</span></span><br><span class="line">        <span class="comment"># previous节点的xpath：/html/body/div/div[2]/div[1]/nav/ul/li/a</span></span><br><span class="line">        <span class="comment"># 所以我们最好使用css选择器作为属性建立表达式： //li[@class="next"]/a/@href</span></span><br><span class="line">        next_page = response.xpath(<span class="string">'//li[@class="next"]/a/@href'</span>).extract_first()</span><br><span class="line">        <span class="keyword">if</span> next_page <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            next_page = response.urljoin(next_page) <span class="comment"># 将下一页信息继续给parse解析</span></span><br><span class="line">            <span class="keyword">yield</span> scrapy.Request(next_page, callback=self.parse) <span class="comment"># 回调函数（不使用括号），前面的即是参数</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="scrapy创建项目"><a href="#scrapy创建项目" class="headerlink" title="scrapy创建项目"></a>scrapy创建项目</h3><ul>
+<li><p>推荐使用scrapy创建项目再爬取数据</p>
+</li>
+<li><p>在合适的目录下，命令行：<code>scrapy startproject ProjectName</code> 创建，目录结构：</p>
+<p><img src="https://raw.githubusercontent.com/RoyKun1/ImageUploads/master/Python/contents.png" alt=""></p>
+</li>
+<li><p>以下框架介绍可以先整体阅读一遍再实操，是一个整体</p>
+</li>
+<li><p>在spiders下面创建代码：</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="keyword">from</span> scrapyDemo.items <span class="keyword">import</span> ScrapydemoItem</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Qnews</span><span class="params">(scrapy.Spider)</span>:</span>	<span class="comment"># 注：代码结果有些问题，看一下流程即可</span></span><br><span class="line">    name = <span class="string">"QQnews"</span></span><br><span class="line">    start_urls = [<span class="string">'https://new.qq.com/ch/antip/'</span>]   <span class="comment"># 主页面(默认url)</span></span><br><span class="line">    <span class="comment"># response代表的是一个页面的信息，而非一个路径</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> url <span class="keyword">in</span> response.xpath(<span class="string">'//*[@id="List"]/div/ul[2]/li/div/h3/a/@href'</span>):<span class="comment"># 所有新闻链接</span></span><br><span class="line">            <span class="comment"># Request对象会传递路径给下载器得到页面</span></span><br><span class="line">            newsPage_url = response.urljoin(url.extract_first())<span class="comment"># extract_first()返回的是一个string，是extract()结果中第一个值</span></span><br><span class="line">            <span class="keyword">yield</span> scrapy.Request(newsPage_url, callback=self.parseNews) <span class="comment"># 回调解析</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parseNews</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        items = ScrapydemoItem()    <span class="comment"># 实例化数据存储字段类</span></span><br><span class="line">        print(response.xpath(<span class="string">'/html/body/div[3]/div[1]/h1/text()'</span>).extract()[<span class="number">0</span>]) <span class="comment"># extract()返回的所有数据，存在一个list里</span></span><br><span class="line">        <span class="comment"># yield &#123;'title': response.xpath('/html/body/div[3]/div[1]/h1/text()').extract()[0]&#125;</span></span><br><span class="line">        items[<span class="string">'title'</span>] = response.xpath(<span class="string">'/html/body/div[3]/div[1]/h1/text()'</span>).extract()[<span class="number">0</span>]</span><br><span class="line">        items[<span class="string">'text'</span>] = response.xpath(<span class="string">'/html/body/div[3]/div[1]/h1/text()'</span>).extract()[<span class="number">0</span>]</span><br><span class="line">        items[<span class="string">'source'</span>] = response.xpath(<span class="string">'/html/body/div[3]/div[1]/h1/text()'</span>).extract()[<span class="number">0</span>] <span class="comment"># 填充数据字段</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>从主页面获取多个新闻页面链接，回调给具体的新闻解析方法parseNews()</p>
+<p>我们可以使用scrapy自带的调试工具，查看页面是否能爬取成功：</p>
+<ul>
+<li>在终端使用命令：<code>scrapy shell http://爬取的网址</code>，可以执行xpath方法</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/RoyKun1/ImageUploads/master/Python/shell.png" alt=""> </p>
+</blockquote>
+<ul>
+<li>除了spider之外，框架还提供了其他类型的爬虫<ol>
+<li>CSVFeedSpider</li>
+<li>CrawlSpider</li>
+<li>XMLFeedSpider </li>
+</ol>
+</li>
+<li>在<code>ProjectName/items.py</code>下定义数据字段：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ScrapydemoItem</span><span class="params">(scrapy.Item)</span>:</span>  <span class="comment"># 定义数据的存储字段，在spiders中引用</span></span><br><span class="line">    <span class="comment"># define the fields for your item here like:</span></span><br><span class="line">    <span class="comment"># name = scrapy.Field()</span></span><br><span class="line">    title = scrapy.Field()  <span class="comment"># 新闻标题</span></span><br><span class="line">    text = scrapy.Field()   <span class="comment"># 新闻内容</span></span><br><span class="line">    source = scrapy.Field() <span class="comment">#新闻来源</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ScrapydemoItem2</span><span class="params">(scrapy.Item)</span>:</span> <span class="comment"># 定义新的数据的存储字段</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>可以使用ItemLoader填充：</p>
+<p><img src="https://raw.githubusercontent.com/RoyKun1/ImageUploads/master/Python/ItemLoader.png" alt=""></p>
+</blockquote>
+<ul>
+<li>获取数据字段Item之后，被发送给Item Pipeline，然后多个组件按照其中定义的方法顺序处理这个item</li>
+<li>经常会实现以下的方法：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">from</span> scrapy.exceptions <span class="keyword">import</span> DropItem</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SpiderPipeline</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.file = open(<span class="string">'xxx.json'</span>,<span class="string">'w'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">close_spider</span><span class="params">(self)</span>:</span><span class="comment"># 爬虫关闭时执行</span></span><br><span class="line">        self.file.close()</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_item</span><span class="params">(self,item,spider)</span>:</span> <span class="comment"># 爬虫执行过程中执行</span></span><br><span class="line">        <span class="keyword">if</span> item[<span class="string">'title'</span>]:</span><br><span class="line">            line = json.dumps(dict(item)) + <span class="string">"\n"</span></span><br><span class="line">            self.file.write(line)</span><br><span class="line">            <span class="keyword">return</span> item</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> DropItem(<span class="string">"没有找到标题"</span>+title)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Item Pipeline还提供了一些可以重用的Pipeline，其中有<code>filesPipeline</code>和<code>imagesPipeline</code>，用于图片和文件下载</p>
+</blockquote>
+<blockquote>
+<p>以上即是scrapy项目使用的大致流程，如果想详细了解提到的组件，可以参考<a href="https://www.jianshu.com/p/1e669c17c7ad" target="_blank" rel="noopener">链接</a>，并结合官网内容，因为有些东西更新了，比如extract()方法变为<code>getall()</code>，extract_first()方法变为<code>get()</code></p>
+</blockquote>
+<blockquote>
+<p>接下来以项目为主介绍详细的使用方法！</p>
+</blockquote>
+<h2 id="实例——爬取豆瓣图书信息"><a href="#实例——爬取豆瓣图书信息" class="headerlink" title="实例——爬取豆瓣图书信息"></a>实例——爬取<a href="https://book.douban.com/top250?start=0" target="_blank" rel="noopener">豆瓣图书</a>信息</h2><ul>
+<li>查看<a href="https://roykun1.github.io/tags/" target="_blank" rel="noopener">项目</a></li>
+<li>接下来就是爬虫的最后一环——数据存储</li>
+<li><a href="https://mp.weixin.qq.com/s/qk51C-JZWi5K9h-EslJzRg" target="_blank" rel="noopener">这里</a>对爬虫知识点进行对比总结</li>
+</ul>
+<p>晚安！</p>
+<p><img src="https://raw.githubusercontent.com/RoyKun1/ImageUploads/master/Python/1.jpg" alt=""></p>
+]]></content>
+      <categories>
+        <category>技能</category>
+      </categories>
+      <tags>
+        <tag>爬虫</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python爬虫系列——网页基础</title>
+    <url>/2019/02/18/Python%E7%88%AC%E8%99%AB%E7%B3%BB%E5%88%97%E2%80%94%E2%80%94%E7%BD%91%E9%A1%B5%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<h1 id="Python爬虫系列——数据解析"><a href="#Python爬虫系列——数据解析" class="headerlink" title="Python爬虫系列——数据解析"></a>Python爬虫系列——数据解析</h1><p>​        要想得到高质量的数据，就要对获取的数据进行解析，不但要了解常用的解析手段，网页相关的知识也很重要，如果你有使用Java或PHP等工具开发网页的经历那学起来就比较容易了。</p>
+<p>​        这里从基础开始。</p>
+<h2 id="CSS基础"><a href="#CSS基础" class="headerlink" title="CSS基础"></a>CSS基础</h2><ul>
+<li><p>HTML 标签控制网页显示的内容，CSS控制着网页的样式和布局</p>
+</li>
+<li><p>我们可以使用CSS的选择器定位查找网页的信息</p>
+</li>
+<li><p>CSS 规则由两个主要的部分构成：选择器，以及一条或多条声明：</p>
+<ol>
+<li>选择器通常是您需要改变样式的 HTML 元素</li>
+<li>每条声明由一个属性和一个值组成</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">p</span> 	<span class="comment">/* &lt;p&gt;标签 */</span></span><br><span class="line">&#123; </span><br><span class="line">	<span class="attribute">color</span>:red; 	<span class="comment">/* 可以使用十六进制代码设置颜色 */</span></span><br><span class="line">	<span class="attribute">text-align</span>:center; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>我们常用的是<code>id</code>和<code>class</code>选择器，属于特殊的属性选择器</p>
+<ol>
+<li><code>id</code> 选择器可以为标有特定 id 的 HTML 元素指定特定的样式，以 “#” 来定义<br>注：id相当于一个标签元素的身份证，唯一指定</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">&lt;!<span class="selector-tag">--HTML</span>代码<span class="selector-tag">--</span>&gt;</span><br><span class="line">&lt;p id=para1&gt;这是一个HTML的P标签&lt;/p&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* css代码 */</span></span><br><span class="line"><span class="selector-id">#para1</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="attribute">text-align</span>:center;</span><br><span class="line">	<span class="attribute">color</span>:red;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>有别于id选择器，<code>class</code>可以在多个标签元素中使用，以一个点”.”号显示            </li>
+</ol>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">&lt;h1 class="center"&gt;标题居中&lt;/h1&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* css代码 */</span></span><br><span class="line"><span class="selector-class">.center</span> &#123;<span class="attribute">text-align</span>:center;&#125;</span><br><span class="line"><span class="selector-tag">p</span><span class="selector-class">.center</span> &#123;<span class="attribute">text-align</span>:center;&#125; <span class="comment">/* 所有的p元素使用该class样式 */</span></span><br></pre></td></tr></table></figure>
+
+<p>嗯！先知道这些就好了，CSS本身就是一门学科，需要在不断使用中加深理解，这里不作为学习爬虫的重点</p>
+</li>
+</ul>
+<h2 id="JSON基础"><a href="#JSON基础" class="headerlink" title="JSON基础"></a>JSON基础</h2><ul>
+<li><p>XML显得有些笨重，于是有了JSON格式的文件，应用很广泛</p>
+</li>
+<li><p>JSON数据就是一段字符串而已，只不过有不同意义的分隔符将其分割开来</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">obj = &#123;<span class="string">'one'</span>: <span class="string">'一'</span>, <span class="string">'two'</span>: <span class="string">'二'</span>&#125;</span><br><span class="line">encoded = json.dumps(obj)</span><br><span class="line">print(type(encoded))	<span class="comment"># &lt;class str&gt;</span></span><br><span class="line">print(encoded)</span><br><span class="line">decoded = json.loads(encoded)	<span class="comment"># &lt;class dict&gt;</span></span><br><span class="line">print(type(decoded))</span><br><span class="line">print(decoded)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="正则表达式基础"><a href="#正则表达式基础" class="headerlink" title="正则表达式基础"></a>正则表达式基础</h2><ul>
+<li><p>Regular Expression，在代码中常简写为<code>regex</code>、<code>regexp</code>或<code>RE</code></p>
+</li>
+<li><p>常被用来检索、替换那些符合某个模式(规则)的文本</p>
+</li>
+<li><p>匹配规则如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">字符</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">\</td>
+<td align="left">将下一个字符标记为一个特殊字符、或一个原义字符、或一个 向后引用、或一个八进制转义符。例如，’n’ 匹配字符 “n”。’\n’ 匹配一个换行符。序列 ‘\‘ 匹配 “&quot; 而 “(“ 则匹配 “(“。</td>
+</tr>
+<tr>
+<td align="left">^</td>
+<td align="left">匹配输入字符串的开始位置。如果设置了 RegExp 对象的 Multiline 属性，^ 也匹配 ‘\n’ 或 ‘\r’ 之后的位置。</td>
+</tr>
+<tr>
+<td align="left">$</td>
+<td align="left">匹配输入字符串的结束位置。如果设置了RegExp 对象的 Multiline 属性，$ 也匹配 ‘\n’ 或 ‘\r’ 之前的位置。</td>
+</tr>
+<tr>
+<td align="left">*</td>
+<td align="left">匹配前面的子表达式零次或多次。例如，zo* 能匹配 “z” 以及 “zoo”。* 等价于{0,}。</td>
+</tr>
+<tr>
+<td align="left">+</td>
+<td align="left">匹配前面的子表达式一次或多次。例如，’zo+’ 能匹配 “zo” 以及 “zoo”，但不能匹配 “z”。+ 等价于 {1,}。</td>
+</tr>
+<tr>
+<td align="left">?</td>
+<td align="left">匹配前面的子表达式零次或一次。例如，”do(es)?” 可以匹配 “do” 或 “does” 。? 等价于 {0,1}。</td>
+</tr>
+<tr>
+<td align="left">{n}</td>
+<td align="left">n 是一个非负整数。匹配确定的 n 次。例如，’o{2}’ 不能匹配 “Bob” 中的 ‘o’，但是能匹配 “food” 中的两个 o。</td>
+</tr>
+<tr>
+<td align="left">{n,}</td>
+<td align="left">n 是一个非负整数。至少匹配n 次。例如，’o{2,}’ 不能匹配 “Bob” 中的 ‘o’，但能匹配 “foooood” 中的所有 o。’o{1,}’ 等价于 ‘o+’。’o{0,}’ 则等价于 ‘o*’。</td>
+</tr>
+<tr>
+<td align="left">{n,m}</td>
+<td align="left">m 和 n 均为非负整数，其中n &lt;= m。最少匹配 n 次且最多匹配 m 次。例如，”o{1,3}” 将匹配 “fooooood” 中的前三个 o。’o{0,1}’ 等价于 ‘o?’。请注意在逗号和两个数之间不能有空格。</td>
+</tr>
+<tr>
+<td align="left">?</td>
+<td align="left">当该字符紧跟在任何一个其他限制符 (*, +, ?, {n}, {n,}, {n,m}) 后面时，匹配模式是非贪婪的。非贪婪模式尽可能少的匹配所搜索的字符串，而默认的贪婪模式则尽可能多的匹配所搜索的字符串。例如，对于字符串 “oooo”，’o+?’ 将匹配单个 “o”，而 ‘o+’ 将匹配所有 ‘o’。</td>
+</tr>
+<tr>
+<td align="left">.</td>
+<td align="left">匹配除换行符（\n、\r）之外的任何单个字符。要匹配包括 ‘\n’ 在内的任何字符，请使用像”<strong>(.|\n)</strong>“的模式。</td>
+</tr>
+<tr>
+<td align="left">(pattern)</td>
+<td align="left">匹配 pattern 并获取这一匹配。所获取的匹配可以从产生的 Matches 集合得到，在VBScript 中使用 SubMatches 集合，在JScript 中则使用 $0…$9 属性。要匹配圆括号字符，请使用 ‘\(‘ 或 ‘\)’。</td>
+</tr>
+<tr>
+<td align="left">(?:pattern)</td>
+<td align="left">匹配 pattern 但不获取匹配结果，也就是说这是一个非获取匹配，不进行存储供以后使用。这在使用 “或” 字符 (|) 来组合一个模式的各个部分是很有用。例如， ‘industr(?:y|ies) 就是一个比 ‘industry|industries’ 更简略的表达式。</td>
+</tr>
+<tr>
+<td align="left">(?=pattern)</td>
+<td align="left">正向肯定预查（look ahead positive assert），在任何匹配pattern的字符串开始处匹配查找字符串。这是一个非获取匹配，也就是说，该匹配不需要获取供以后使用。例如，”Windows(?=95|98|NT|2000)”能匹配”Windows2000”中的”Windows”，但不能匹配”Windows3.1”中的”Windows”。预查不消耗字符，也就是说，在一个匹配发生后，在最后一次匹配之后立即开始下一次匹配的搜索，而不是从包含预查的字符之后开始。</td>
+</tr>
+<tr>
+<td align="left">(?!pattern)</td>
+<td align="left">正向否定预查(negative assert)，在任何不匹配pattern的字符串开始处匹配查找字符串。这是一个非获取匹配，也就是说，该匹配不需要获取供以后使用。例如”Windows(?!95|98|NT|2000)”能匹配”Windows3.1”中的”Windows”，但不能匹配”Windows2000”中的”Windows”。预查不消耗字符，也就是说，在一个匹配发生后，在最后一次匹配之后立即开始下一次匹配的搜索，而不是从包含预查的字符之后开始。</td>
+</tr>
+<tr>
+<td align="left">(?&lt;=pattern)</td>
+<td align="left">反向(look behind)肯定预查，与正向肯定预查类似，只是方向相反。例如，”`(?&lt;=95</td>
+</tr>
+<tr>
+<td align="left">(?&lt;!pattern)</td>
+<td align="left">反向否定预查，与正向否定预查类似，只是方向相反。例如”<code>(?&quot;能匹配&quot;</code>3.1Windows<code>&quot;中的&quot;</code>Windows<code>&quot;，但不能匹配&quot;</code>2000Windows<code>&quot;中的&quot;</code>Windows`”。</td>
+</tr>
+<tr>
+<td align="left">x|y</td>
+<td align="left">匹配 x 或 y。例如，’z|food’ 能匹配 “z” 或 “food”。’(z|f)ood’ 则匹配 “zood” 或 “food”。</td>
+</tr>
+<tr>
+<td align="left">[xyz]</td>
+<td align="left">字符集合。匹配所包含的任意一个字符。例如， ‘[abc]’ 可以匹配 “plain” 中的 ‘a’。</td>
+</tr>
+<tr>
+<td align="left">[^xyz]</td>
+<td align="left">负值字符集合。匹配未包含的任意字符。例如， ‘[^abc]’ 可以匹配 “plain” 中的’p’、’l’、’i’、’n’。</td>
+</tr>
+<tr>
+<td align="left">[a-z]</td>
+<td align="left">字符范围。匹配指定范围内的任意字符。例如，’[a-z]’ 可以匹配 ‘a’ 到 ‘z’ 范围内的任意小写字母字符。</td>
+</tr>
+<tr>
+<td align="left">[^a-z]</td>
+<td align="left">负值字符范围。匹配任何不在指定范围内的任意字符。例如，’[^a-z]’ 可以匹配任何不在 ‘a’ 到 ‘z’ 范围内的任意字符。</td>
+</tr>
+<tr>
+<td align="left">\b</td>
+<td align="left">匹配一个单词边界，也就是指单词和空格间的位置。例如， ‘er\b’ 可以匹配”never” 中的 ‘er’，但不能匹配 “verb” 中的 ‘er’。</td>
+</tr>
+<tr>
+<td align="left">\B</td>
+<td align="left">匹配非单词边界。’er\B’ 能匹配 “verb” 中的 ‘er’，但不能匹配 “never” 中的 ‘er’。</td>
+</tr>
+<tr>
+<td align="left">\cx</td>
+<td align="left">匹配由 x 指明的控制字符。例如， \cM 匹配一个 Control-M 或回车符。x 的值必须为 A-Z 或 a-z 之一。否则，将 c 视为一个原义的 ‘c’ 字符。</td>
+</tr>
+<tr>
+<td align="left">\d</td>
+<td align="left">匹配一个数字字符。等价于 [0-9]。</td>
+</tr>
+<tr>
+<td align="left">\D</td>
+<td align="left">匹配一个非数字字符。等价于 [^0-9]。</td>
+</tr>
+<tr>
+<td align="left">\f</td>
+<td align="left">匹配一个换页符。等价于 \x0c 和 \cL。</td>
+</tr>
+<tr>
+<td align="left">\n</td>
+<td align="left">匹配一个换行符。等价于 \x0a 和 \cJ。</td>
+</tr>
+<tr>
+<td align="left">\r</td>
+<td align="left">匹配一个回车符。等价于 \x0d 和 \cM。</td>
+</tr>
+<tr>
+<td align="left">\s</td>
+<td align="left">匹配任何空白字符，包括空格、制表符、换页符等等。等价于 [ \f\n\r\t\v]。</td>
+</tr>
+<tr>
+<td align="left">\S</td>
+<td align="left">匹配任何非空白字符。等价于 [^ \f\n\r\t\v]。</td>
+</tr>
+<tr>
+<td align="left">\t</td>
+<td align="left">匹配一个制表符。等价于 \x09 和 \cI。</td>
+</tr>
+<tr>
+<td align="left">\v</td>
+<td align="left">匹配一个垂直制表符。等价于 \x0b 和 \cK。</td>
+</tr>
+<tr>
+<td align="left">\w</td>
+<td align="left">匹配字母、数字、下划线。等价于[A-Za-z0-9_]。</td>
+</tr>
+<tr>
+<td align="left">\W</td>
+<td align="left">匹配非字母、数字、下划线。等价于 [^A-Za-z0-9_]。</td>
+</tr>
+<tr>
+<td align="left">\xn</td>
+<td align="left">匹配 n，其中 n 为十六进制转义值。十六进制转义值必须为确定的两个数字长。例如，’\x41’ 匹配 “A”。’\x041’ 则等价于 ‘\x04’ &amp; “1”。正则表达式中可以使用 ASCII 编码。</td>
+</tr>
+<tr>
+<td align="left">\num</td>
+<td align="left">匹配 num，其中 num 是一个正整数。对所获取的匹配的引用。例如，’(.)\1’ 匹配两个连续的相同字符。</td>
+</tr>
+<tr>
+<td align="left">\n</td>
+<td align="left">标识一个八进制转义值或一个向后引用。如果 \n 之前至少 n 个获取的子表达式，则 n 为向后引用。否则，如果 n 为八进制数字 (0-7)，则 n 为一个八进制转义值。</td>
+</tr>
+<tr>
+<td align="left">\nm</td>
+<td align="left">标识一个八进制转义值或一个向后引用。如果 \nm 之前至少有 nm 个获得子表达式，则 nm 为向后引用。如果 \nm 之前至少有 n 个获取，则 n 为一个后跟文字 m 的向后引用。如果前面的条件都不满足，若 n 和 m 均为八进制数字 (0-7)，则 \nm 将匹配八进制转义值 nm。</td>
+</tr>
+<tr>
+<td align="left">\nml</td>
+<td align="left">如果 n 为八进制数字 (0-3)，且 m 和 l 均为八进制数字 (0-7)，则匹配八进制转义值 nml。</td>
+</tr>
+<tr>
+<td align="left">\un</td>
+<td align="left">匹配 n，其中 n 是一个用四个十六进制数字表示的 Unicode 字符。例如， \u00A9 匹配版权符号 (?)。</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>别怕，熟能生巧！传说没有正则不能干的事情……</p>
+</blockquote>
+</li>
+<li><p>使用Python的<code>re</code>模块解析正则表达式</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">m = re.match(<span class="string">r'^(\d&#123;3&#125;)-(\d&#123;3,8&#125;)$'</span>, <span class="string">'010-12345'</span>)</span><br><span class="line">print(m.groups())	<span class="comment"># ('010', '12345')	所有括号中的字符</span></span><br><span class="line">print(m.group(<span class="number">0</span>))	<span class="comment"># 010-12345		匹配到的整个字符串</span></span><br><span class="line">print(m.group(<span class="number">1</span>))	<span class="comment"># 010	第一个括号内的匹配项</span></span><br><span class="line">print(m.group(<span class="number">2</span>))	<span class="comment"># 12345</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>正则表达式示例</p>
+<blockquote>
+<p>这里使用<code>/ /</code>包括</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="left">正则表达式</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">/\b([a-z]+) \1\b/gi</td>
+<td align="left">一个单词连续出现的位置。</td>
+</tr>
+<tr>
+<td align="left">/(\w+)://([^/:]+)(:\d*)?([^# ]*)/</td>
+<td align="left">将一个URL解析为协议、域、端口及相对路径。</td>
+</tr>
+<tr>
+<td align="left">/^(?:Chapter|Section) [1-9][0-9]{0,1}$/</td>
+<td align="left">定位章节的位置。</td>
+</tr>
+<tr>
+<td align="left">/[-a-z]/</td>
+<td align="left">a至z共26个字母再加一个 - 号。</td>
+</tr>
+<tr>
+<td align="left">/ter\b/</td>
+<td align="left">可匹配chapter，而不能匹配terminal。</td>
+</tr>
+<tr>
+<td align="left">/\Bapt/</td>
+<td align="left">可匹配chapter，而不能匹配aptitude。</td>
+</tr>
+<tr>
+<td align="left">/Windows(?=95 |98 |NT )/</td>
+<td align="left">可匹配Windows95或Windows98或WindowsNT，当找到一个匹配后，从Windows后面开始进行下一次的检索匹配。</td>
+</tr>
+<tr>
+<td align="left">/^\s*$/</td>
+<td align="left">匹配空行。</td>
+</tr>
+<tr>
+<td align="left">/\d{2}-\d{5}/</td>
+<td align="left">验证由两位数字、一个连字符再加 5 位数字组成的 ID 号。</td>
+</tr>
+<tr>
+<td align="left">/&lt;\s*(\S+)(\s[^&gt;]*)?&gt;[\s\S]*&lt;\s*/\1\s*&gt;/</td>
+<td align="left">匹配 HTML 标记。</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>多写多练，可以使用在线<a href="http://c.runoob.com/front-end/854" target="_blank" rel="noopener">工具</a>测试自己的表达式</p>
+</li>
+<li><p>正则表达式可以作为解析爬取数据的一种方式了</p>
+</li>
+</ul>
+<h2 id="XPath基础"><a href="#XPath基础" class="headerlink" title="XPath基础"></a>XPath基础</h2><ul>
+<li>XPath 是一门在 XML 文档中查找信息的语言，也是我们解析数据的常用手段</li>
+<li>虽然CSS也可以通过选择器定位信息，但XPath可以通过树的结构实现快速查询</li>
+<li>在 XPath 中，有七种类型的节点：元素、属性、文本、命名空间、处理指令、注释以及文档（根）节点。XML 文档是被作为节点树来对待的。树的根被称为文档节点或者根节点</li>
+<li>节点之间的关系有：父、子、同胞（兄弟）、先辈、后代</li>
+</ul>
+<h3 id="XPath语法"><a href="#XPath语法" class="headerlink" title="XPath语法"></a>XPath语法</h3><ul>
+<li><p>我们使用以下文档学习</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"> </span><br><span class="line"><span class="tag">&lt;<span class="name">bookstore</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">book</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span> <span class="attr">lang</span>=<span class="string">"eng"</span>&gt;</span>Harry Potter<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">price</span>&gt;</span>29.99<span class="tag">&lt;/<span class="name">price</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">book</span>&gt;</span></span><br><span class="line"> </span><br><span class="line"><span class="tag">&lt;<span class="name">book</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span> <span class="attr">lang</span>=<span class="string">"eng"</span>&gt;</span>Learning XML<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">price</span>&gt;</span>39.95<span class="tag">&lt;/<span class="name">price</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">book</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bookstore</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用<strong>路径表达式</strong>在 XML 文档中选取节点，常用的路径表达式：</p>
+<table>
+<thead>
+<tr>
+<th align="left">表达式</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">nodename</td>
+<td align="left">选取此节点的所有子节点。</td>
+</tr>
+<tr>
+<td align="left">/</td>
+<td align="left">从根节点选取。</td>
+</tr>
+<tr>
+<td align="left">//</td>
+<td align="left">从匹配选择的当前节点选择文档中的节点，而不考虑它们的位置。</td>
+</tr>
+<tr>
+<td align="left">.</td>
+<td align="left">选取当前节点。</td>
+</tr>
+<tr>
+<td align="left">..</td>
+<td align="left">选取当前节点的父节点。</td>
+</tr>
+<tr>
+<td align="left">@</td>
+<td align="left">选取属性。</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>应用于例子：</p>
+<table>
+<thead>
+<tr>
+<th align="left">路径表达式</th>
+<th align="left">结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">bookstore</td>
+<td align="left">选取 bookstore 元素的所有子节点。</td>
+</tr>
+<tr>
+<td align="left">/bookstore</td>
+<td align="left">选取根元素 bookstore。注释：假如路径起始于正斜杠( / )，则此路径始终代表到某元素的绝对路径！</td>
+</tr>
+<tr>
+<td align="left">bookstore/book</td>
+<td align="left">选取属于 bookstore 的子元素的所有 book 元素。</td>
+</tr>
+<tr>
+<td align="left">//book</td>
+<td align="left">选取所有 book 子元素，而不管它们在文档中的位置。</td>
+</tr>
+<tr>
+<td align="left">bookstore//book</td>
+<td align="left">选择属于 bookstore 元素的后代的所有 book 元素，而不管它们位于 bookstore 之下的什么位置。</td>
+</tr>
+<tr>
+<td align="left">//@lang</td>
+<td align="left">选取名为 lang 的所有属性（相当于css中的class/id选择器）。</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>谓语：用来查找某个特定的节点或者包含某个指定的值的节点</p>
+</li>
+<li><p>谓语被嵌在方括号中</p>
+<table>
+<thead>
+<tr>
+<th align="left">路径表达式</th>
+<th align="left">结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">/bookstore/book[1]</td>
+<td align="left">选取属于 bookstore 子元素的第一个 book 元素。</td>
+</tr>
+<tr>
+<td align="left">/bookstore/book[last()]</td>
+<td align="left">选取属于 bookstore 子元素的最后一个 book 元素。</td>
+</tr>
+<tr>
+<td align="left">/bookstore/book[last()-1]</td>
+<td align="left">选取属于 bookstore 子元素的倒数第二个 book 元素。</td>
+</tr>
+<tr>
+<td align="left">/bookstore/book[position()&lt;3]</td>
+<td align="left">选取最前面的两个属于 bookstore 元素的子元素的 book 元素。</td>
+</tr>
+<tr>
+<td align="left">//title[@lang]</td>
+<td align="left">选取所有拥有名为 lang 的属性的 title 元素。</td>
+</tr>
+<tr>
+<td align="left">//title[@lang=’eng’]</td>
+<td align="left">选取所有 title 元素，且这些元素拥有值为 eng 的 lang 属性。</td>
+</tr>
+<tr>
+<td align="left">/bookstore/book[price&gt;35.00]</td>
+<td align="left">选取 bookstore 元素的所有 book 元素，且其中的 price 元素的值须大于 35.00。</td>
+</tr>
+<tr>
+<td align="left">/bookstore/book[price&gt;35.00]//title</td>
+<td align="left">选取 bookstore 元素中的 book 元素的所有 title 元素，且其中的 price 元素的值须大于 35.00。</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>通配符可用来选取未知的 XML 元素</p>
+</li>
+<li><p>注意区别节点和属性</p>
+<table>
+<thead>
+<tr>
+<th align="left">通配符</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">*</td>
+<td align="left">匹配任何元素节点。</td>
+</tr>
+<tr>
+<td align="left">@*</td>
+<td align="left">匹配任何属性节点。</td>
+</tr>
+<tr>
+<td align="left">node()</td>
+<td align="left">匹配任何类型的节点。</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left">路径表达式</th>
+<th align="left">结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">/bookstore/*</td>
+<td align="left">选取 bookstore 元素的所有子元素。</td>
+</tr>
+<tr>
+<td align="left">//*</td>
+<td align="left">选取文档中的所有元素。</td>
+</tr>
+<tr>
+<td align="left">//title[@*]</td>
+<td align="left">选取所有带有属性的 title 元素。</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>好了好了，已经很复杂了，但是越复杂功能越强大！</p>
+<p>我们可以使用浏览器的开发者工具找到对应的位置自动获取XPath表达式</p>
+</blockquote>
+</li>
+<li><p>上面介绍了两种定位网页信息的方法，对于网页的XML文件，还有两种解析的方式：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用DOM（信息量小时使用，需要事先解析完DOM树）</span></span><br><span class="line"><span class="keyword">from</span> xml.dom <span class="keyword">import</span> minidom</span><br><span class="line"></span><br><span class="line">doc = minidom.parse(<span class="string">'book.xml'</span>)</span><br><span class="line">root = doc.documentElement</span><br><span class="line"><span class="comment"># print(dir(root))</span></span><br><span class="line">print(root.nodeName)</span><br><span class="line">books = root.getElementsByTagName(<span class="string">'book'</span>)</span><br><span class="line">print(type(books))</span><br><span class="line"><span class="keyword">for</span> book <span class="keyword">in</span> books:</span><br><span class="line">    titles = book.getElementsByTagName(<span class="string">'title'</span>)</span><br><span class="line">    print(titles[<span class="number">0</span>].childNodes[<span class="number">0</span>].nodeValue)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 使用SAX 流模式（信息量大时使用，边读入边解析）</span></span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="keyword">from</span> xml.parsers.expat <span class="keyword">import</span> ParserCreate</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DefaultSaxHandler</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">start_element</span><span class="params">(self, name, attrs)</span>:</span></span><br><span class="line">        self.element = name</span><br><span class="line">        print(<span class="string">'element: %s, attrs: %s'</span> % (name, str(attrs)))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">end_element</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        print(<span class="string">'end element: %s'</span> % name)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">char_data</span><span class="params">(self, text)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> text.strip():</span><br><span class="line">            print(<span class="string">"%s's text is %s"</span> % (self.element, text))</span><br><span class="line"></span><br><span class="line">handler = DefaultSaxHandler()</span><br><span class="line">parser = ParserCreate()</span><br><span class="line">parser.StartElementHandler = handler.start_element</span><br><span class="line">parser.EndElementHandler = handler.end_element</span><br><span class="line">parser.CharacterDataHandler = handler.char_data</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'book.xml'</span>, <span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    parser.Parse(f.read())</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注：这两种方式暂且了解即可</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="Beautiful-Soup"><a href="#Beautiful-Soup" class="headerlink" title="Beautiful Soup"></a>Beautiful Soup</h2><ul>
+<li><p>除了XPath，还有一种常见的网页数据解析库就是bs4</p>
+</li>
+<li><p>可以从HTML或XML文件中提取数据的Python库，它能够通过你喜欢的转换器实现惯用的文档导航、查看、修改</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- test.html --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span><span class="tag">&lt;<span class="name">head</span>&gt;</span><span class="tag">&lt;<span class="name">title</span>&gt;</span>The Dormouse's story<span class="tag">&lt;/<span class="name">title</span>&gt;</span><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"title"</span> <span class="attr">name</span>=<span class="string">"dromouse"</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>The Dormouse's story<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"story"</span>&gt;</span>Once upon a time there were three little sisters; and their names were</span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://example.com/elsie"</span> <span class="attr">class</span>=<span class="string">"sister"</span> <span class="attr">id</span>=<span class="string">"link1"</span>&gt;</span><span class="comment">&lt;!-- Elsie --&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span>,</span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://example.com/lacie"</span> <span class="attr">class</span>=<span class="string">"sister"</span> <span class="attr">id</span>=<span class="string">"link2"</span>&gt;</span>Lacie<span class="tag">&lt;/<span class="name">a</span>&gt;</span> and</span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://example.com/tillie"</span> <span class="attr">class</span>=<span class="string">"sister"</span> <span class="attr">id</span>=<span class="string">"link3"</span>&gt;</span>Tillie<span class="tag">&lt;/<span class="name">a</span>&gt;</span>;</span><br><span class="line">and they lived at the bottom of a well.</span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"story"</span>&gt;</span>...<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--没有闭合标签，不用担心--&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup </span><br><span class="line">soup = BeautifulSoup(open(<span class="string">'download/test.html'</span>))</span><br><span class="line">print(soup.prettify())	<span class="comment"># 按一定格式打印出所有提取的信息</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>BeautifulSoup4将复杂HTML文档转换成一个复杂的树形结构,每个节点都是Python对象,所有对象可以归纳为4种：</p>
+<ol>
+<li>Tag</li>
+<li>NavigableString</li>
+<li>BeautifulSoup</li>
+<li>Comment</li>
+</ol>
+</li>
+<li><p>标签Tag</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 获取title标签的所有内容</span></span><br><span class="line">print(type(soup.title)) <span class="comment"># &lt;class 'bs4.element.Tag'&gt;</span></span><br><span class="line">print(soup.title)   <span class="comment"># &lt;title&gt;The Dormouse's story&lt;/title&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># .contents：获取Tag的所有子节点，返回一个list</span></span><br><span class="line">print(soup.body.contents)</span><br><span class="line"></span><br><span class="line"><span class="comment"># .children：获取Tag的所有子节点，返回一个生成器</span></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> soup.body.children:</span><br><span class="line">    print(item)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>文本内容NavigableString</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(type(soup.title.string))  <span class="comment"># &lt;class 'bs4.element.NavigableString'&gt;</span></span><br><span class="line">print(soup.title.string)	<span class="comment"># The Dormouse's story</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Comment</p>
+<p>特殊类型的 NavigableString 对象，其输出的内容不包括注释符号</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(soup.a.string)	<span class="comment"># Elsie  自动去掉注释符号</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>BeautifulSoup</p>
+<p>是一个特殊的 Tag，我们可以分别获取它的类型，名称，以及属性</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(soup.name)  <span class="comment"># [document]</span></span><br><span class="line">print(soup.attrs)</span><br><span class="line">print(soup.title.name)	<span class="comment"># title</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>CSS查询</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(soup.select(<span class="string">'.sister'</span>))	<span class="comment"># class选择器</span></span><br><span class="line">print(soup.select(<span class="string">'#link1'</span>))	<span class="comment"># id选择器</span></span><br><span class="line">print(soup.select(<span class="string">'head &gt; title'</span>)[<span class="number">0</span>].get_text())	<span class="comment"># The Dormouse's story</span></span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<h2 id="HTMLParser"><a href="#HTMLParser" class="headerlink" title="HTMLParser"></a>HTMLParser</h2><ul>
+<li><p>是python解析HTML的内置模块</p>
+</li>
+<li><p>HTML本质上是XML的子集，但是HTML的语法没有XML那么严格，所以不能用标准的DOM或SAX来解析HTML。当然，bs4更方便了！</p>
+</li>
+<li><p>HTMLParser是一个基类，很多方法需要我们继承之后实现</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> HTMLParser <span class="keyword">import</span> HTMLParser</span><br><span class="line"><span class="comment"># markupbase	需要自己下载放在site-package目录下</span></span><br><span class="line"><span class="comment"># 下载链接：https://pypi.org/project/micropython-_markupbase/#files</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyParser</span><span class="params">(HTMLParser)</span>:</span> <span class="comment"># 很多方法需要继承并重写</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">handle_decl</span><span class="params">(self, decl)</span>:</span></span><br><span class="line">        HTMLParser.handle_decl(self, decl)</span><br><span class="line">        print(<span class="string">'decl %s'</span> % decl)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">handle_starttag</span><span class="params">(self, tag, attrs)</span>:</span></span><br><span class="line">        HTMLParser.handle_starttag(self, tag, attrs)</span><br><span class="line">        print(<span class="string">'&lt;'</span> + tag + <span class="string">'&gt;'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">handle_endtag</span><span class="params">(self, tag)</span>:</span></span><br><span class="line">        HTMLParser.handle_endtag(self, tag)</span><br><span class="line">        print(<span class="string">'&lt;/'</span> + tag + <span class="string">'&gt;'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">handle_data</span><span class="params">(self, data)</span>:</span></span><br><span class="line">        HTMLParser.handle_data(self, data)</span><br><span class="line">        print(<span class="string">'data %s'</span> % data)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#&lt;br/&gt;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">handle_startendtag</span><span class="params">(self, tag, attrs)</span>:</span></span><br><span class="line">        HTMLParser.handle_startendtag(self, tag, attrs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">handle_comment</span><span class="params">(self, data)</span>:</span></span><br><span class="line">        HTMLParser.handle_comment(self, data)</span><br><span class="line">        print(<span class="string">'data %s'</span> % data)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">close</span><span class="params">(self)</span>:</span></span><br><span class="line">        HTMLParser.close(self)</span><br><span class="line">        print(<span class="string">'Close'</span>)</span><br><span class="line"></span><br><span class="line">demo = MyParser()</span><br><span class="line">demo.feed(open(<span class="string">'download/test.html'</span>).read())</span><br><span class="line">demo.close()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>以上学习了网页基础和解析网页信息的主要方法，针对不同的文档格式都能够有效应对了！</p>
+</li>
+</ul>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>​        配合后面的request或Selenium请求库，我们会得到需要的数据，加上这里的解析数据方式，基本可以实现大部分爬虫功能。</p>
+]]></content>
+      <categories>
+        <category>技能</category>
+      </categories>
+      <tags>
+        <tag>爬虫</tag>
       </tags>
   </entry>
 </search>
