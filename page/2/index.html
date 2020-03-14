@@ -294,6 +294,171 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/08/Vue%E9%AB%98%E7%BA%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Roy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/Roy.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RoyBlog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/10/08/Vue%E9%AB%98%E7%BA%A7/" itemprop="url">Vue高级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-08T10:13:46+08:00">
+                2019-10-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%A8%E6%A0%88/" itemprop="url" rel="index">
+                    <span itemprop="name">全栈</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Vue高级
+在掌握了Vue的基本操作之后，为了避免采坑，需要了解一些深层的原理
+
+Vue实例的生命周期生命周期基本流程图：
+
+
+从图中即可看出操作的顺序，下面逐个解释
+
+beforeCreate
+实例刚在内存中被创建出来，此时，还没有初始化好 data 和 methods 属性
+
+created
+实例已经在内存中创建OK，此时 data 和 methods 已经创建OK，此时还没有开始编译模板
+
+
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/10/08/Vue%E9%AB%98%E7%BA%A7/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  <div>
+    
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/07/Vue%E8%BF%9B%E9%98%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -394,7 +559,7 @@
 
 
 语法
-123456789101112131415161718192021// 注册一个全局组件// 
+123456789101112131415161718192021// 注册一个全局组件// tagName 为组件名，options 为配置选项Vue.component(tagName, o
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -556,7 +721,8 @@ Vue官网
 其他的安装方法和应用构建参看教程
 
 基本操作
-创建一个Vue实例，并绑定
+创建一个Vue实例，并绑定页面元素
+12345678910111213141516171819202122232425&lt;
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -708,7 +874,7 @@ Vue官网
         
           
           Python爬虫系列——数据请求​        爬虫是一种按照一定的规则，自动的抓取网页信息的程序或者脚本，这样的程序可以用很多语言实现，但是人生苦短大家都用python，所以你要有python基础知识（跟着我的博文走一遍就好啦）。
-​        Python爬虫的方式有多种，从使用爬虫框架获
+​        Python爬虫的方式有多种，从使用爬虫框架获取数据到解析提取，再到数据存储，各阶段都有不同的手段和类库支持。虽然不能一概而论哪种方式一定更好，毕
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -866,7 +1032,11 @@ Vue官网
 
 
 CSS基础
-HTML 标签控制网页显示的内容，CSS控制着网页的样式和布
+HTML 标签控制网页显示的内容，CSS控制着网页的样式和布局
+
+我们可以使用CSS的选择器定位查找网页的信息
+
+CSS 规则由两个主要的部分构成：选择器，以及
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -965,7 +1135,7 @@ HTML 标签控制网页显示的内容，CSS控制着网页的样式和布
               
                 <a href="/archives/%7C%7Carchive">
               
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -976,7 +1146,7 @@ HTML 标签控制网页显示的内容，CSS控制着网页的样式和布
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -987,7 +1157,7 @@ HTML 标签控制网页显示的内容，CSS控制着网页的样式和布
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

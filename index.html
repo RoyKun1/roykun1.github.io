@@ -391,7 +391,7 @@
 命令行工具：scrapy startproject DoubanBookSpider
 一般先在items.py配置数据字段
 
-12345678910111213141516class DoubanMovieCommentItem(scrapy.Ite
+12345678910111213141516class DoubanMovieCommentItem(scrapy.Item):    # define the fields for your item here like
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -556,7 +556,9 @@
 
 双击进入蒙版勾选净化颜色
 
-按住ctrl键单击图层缩览图，使用画笔工具吸取羽毛其他
+按住ctrl键单击图层缩览图，使用画笔工具吸取羽毛其他部分颜色涂抹痕迹部分
+
+将缩览图转换为智能对象（使用净化颜色后多出复制图层且不再是智能对象，可以复制
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -709,10 +711,172 @@
           
           使用python和github搭建个人博客一、简介
 作为学习PythonWeb的入门，依托github搭建个人博客，以后的项目代码和笔记均托管在这里。由于静态网站加载快易被搜索引擎检索到，我们使用hexo(a fast simple&amp;powerful blog framework)搭建框架。
+
+二、站点搭建1. git &amp; GitHub
+系统学习了git，自己的github账号：
+
           ...
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2020/02/12/How-to-use-Hexo/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  <div>
+    
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/18/%E6%8A%93%E5%8F%96%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E%E6%95%B0%E6%8D%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Roy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/Roy.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RoyBlog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/01/18/%E6%8A%93%E5%8F%96%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E%E6%95%B0%E6%8D%AE/" itemprop="url">抓取新冠肺炎数据</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-18T15:19:31+08:00">
+                2020-01-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Demo/" itemprop="url" rel="index">
+                    <span itemprop="name">Demo</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          爬虫Demo——抓取新冠肺炎数据简介
+使用Python的requests模块请求数据
+re正则匹配所需数据信息
+pandas模块保存信息
+json模块对数据解码
+数据来源：丁香医生疫情实时动态
+
+代码分析1234567891011121314151617181920212223242526272829import reimport requestsimport jsonimport pandas 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/01/18/%E6%8A%93%E5%8F%96%E6%96%B0%E5%86%A0%E8%82%BA%E7%82%8E%E6%95%B0%E6%8D%AE/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -863,7 +1027,7 @@
 这里将Python常用的基础知识整理回顾，实践出真知
 IDE使用PyCharm
 
-Python基操字符串1234567891011121314151617181920212223242526272829303132333435363738394041mystr = 'RoyKun'
+Python基操字符串1234567891011121314151617181920212223242526272829303132333435363738394041mystr = 'RoyKun'result = mystr.index('R')   # 获取字符索引，没找到会崩溃print(r
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1023,7 +1187,7 @@ ThinkPHP6 数据库和模型操作已经独立为ThinkORM库
 
 创建数据库
 
-1234567891
+123456789101112131415DROP TABLE IF EXISTS &#96;shop_cat&#96;
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1178,7 +1342,7 @@ ThinkPHP6 数据库和模型操作已经独立为ThinkORM库
 Config目录下面是tp6的常规配置，可以自定义配置并引入
 配置一般均以return返回
 
-123456789101112131415├─config（配置目录）│  ├─app.php            应用配置│  ├─cache.php          
+123456789101112131415├─config（配置目录）│  ├─app.php            应用配置│  ├─cache.php          缓存配置│  ├─console.php        控制台配置│  ├─cookie.php  
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1334,7 +1498,11 @@ ThinkPHP支持传统的MVC（Model-View-Controller）模式以及流行的MVVM�
 
 
 一、MVC
-MVC 软件系统分为三个基本部分：模型（Model）、视图（View）和控制器（Cont
+MVC 软件系统分为三个基本部分：模型（Model）、视图（View）和控制器（Controller）
+ThinkPHP 是一个典型的 MVC 架构
+
+
+控制器 - 负责转发请求，对请求进
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1487,7 +1655,12 @@ MVC 软件系统分为三个基本部分：模型（Model）、视图（View）�
           
           thinkphp6基础笔记[连载]环境配置篇主流的PHP框架有Laravel，Thinkphp，Yii，作为一款国产轻量级的中型框架，有易于上手，有丰富的中文文档，框架的兼容性较强等优点，目前已更新至tp6。
 一、安装
-6.0 版本开始，必须通过 Composer 方式安装和更新，无法通过 Git 
+6.0 版本开始，必须通过 Composer 方式安装和更新，无法通过 Git 下载安装。
+
+PHP &gt;= 7.1.0
+在windows中，下载Composer软件
+
+第一步
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1648,174 +1821,12 @@ MVC 软件系统分为三个基本部分：模型（Model）、视图（View）�
 
 前面已经介绍过scrapy的流程，这里主要分为以下几步：
 
-在spider
+在spider中爬取一个Item，将图片的URLs放入image_urls 字段
+在pipeline中重载get_
           ...
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2019/11/13/Scrapy%E7%88%AC%E5%8F%96%E5%9B%BE%E7%89%87/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  <div>
-    
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/08/Vue%E9%AB%98%E7%BA%A7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Roy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/Roy.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RoyBlog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/10/08/Vue%E9%AB%98%E7%BA%A7/" itemprop="url">Vue高级</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-08T10:13:46+08:00">
-                2019-10-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%85%A8%E6%A0%88/" itemprop="url" rel="index">
-                    <span itemprop="name">全栈</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Vue高级
-在掌握了Vue的基本操作之后，为了避免采坑，需要了解一些深层的原理
-
-Vue实例的生命周期生命周期基本流程图：
-
-
-从图中即可看出操作的顺序，下面逐个解释
-
-beforeCreate
-实例刚在内存中被创建出来，此时，还没有初始化好 data 和 methods 属性
-
-created
-实
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/10/08/Vue%E9%AB%98%E7%BA%A7/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1910,7 +1921,7 @@ created
               
                 <a href="/archives/%7C%7Carchive">
               
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1921,7 +1932,7 @@ created
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1932,7 +1943,7 @@ created
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
